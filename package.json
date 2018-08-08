@@ -5,7 +5,7 @@
   "author": "JosephJvB <joevanbo@pm.me>",
   "license": "MIT",
   "scripts": {
-  	"start": "echo 'ERROR: NO START SCRIPT'",
+  	"start": "parcel index.html",
   	"test": "echo 'Everything looks fine. Carry on, citizen.'"
   },
   "devDependencies": {
