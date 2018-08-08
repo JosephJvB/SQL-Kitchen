@@ -1,0 +1,20 @@
+{
+  "name": "sql-kitchen",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "JosephJvB <joevanbo@pm.me>",
+  "license": "MIT",
+  "scripts": {
+  	"start": "echo 'ERROR: NO START SCRIPT'",
+  	"test": "echo 'Everything looks fine. Carry on, citizen.'"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.9.7"
+  },
+  "dependencies": {
+    "pg-promise": "^8.4.5",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-hyperscript": "^3.2.0"
+  }
+}
