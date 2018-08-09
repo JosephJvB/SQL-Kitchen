@@ -19,12 +19,7 @@ const DB = pgp({
 // dropTable('limber_desk')
 
 function makeTable({table, columns}) {
-// TODO: factor these string creation for-loops out into utility functions. Not urgent
-	let sqlColumns = ''
-	for (let i = 0; i < columns.length; i++) {
-		let sqlColumn = columns[i]
-		sqlColumns += i + 1 < columns.length ? `${sqlColumn},` : sqlColumn
-	}
+	const sqlColumns = columns.reduce((str, column, i) => `${str}${column}${i + 1 < columns.length ? ',' : ''}`, '')
 	DB.one(`create table "${table}" (${sqlColumns})`)
 		.then(res => helper({DB, type: 'CREATE_TABLE', result: res}))
 		.catch(err => helper({DB, type: 'CREATE_TABLE ERROR', result: err}))
@@ -37,16 +32,18 @@ function dropTable(table) {
 }
 
 function insert({table, items}) {
-	let sqlColumns = ''
-	let sqlValues = ''
-	for (let i = 0; i < items.length; i++) {
-		const {column, value} = items[i]
-		sqlColumns += i + 1 < items.length ? `${column},` : column
-		sqlValues += i + 1 < items.length ? `${value},` : value
-	}
+	const sqlColumns = items.reduce((str, item, i) => `${str}${item.column}${i + 1 < items.length ? ',' : ''}`, '')
+	const sqlValues = items.reduce((str, item, i) => `${str}${item.value}${i + 1 < items.length ? ',' : ''}`, '')
 	DB.one(`insert into ${table} (${sqlColumns}) values (${sqlValues}) returning *`)
 		.then(res => helper({DB, type: 'INSERT', result: res}))
 		.catch(err => helper({DB, type: 'INSERT_ERROR', result: err}))
+}
+
+function deleteLike({table, column, string}) {
+	if(typeof string !== 'String') return console.error('deleteLike wants a string.\n You gave me a', typeof string, '=', string)
+	DB.one(`delete from "${table}" where "${column}" ~ ${string} returning *`)
+		.then(res => helper({DB, type: 'DELETE_LIKE', result: res}))
+		.catch(err => helper({DB, type: 'DELETE_LIKE_ERROR', result: err}))
 }
 
 // used in .then&.catch after promise resolves
