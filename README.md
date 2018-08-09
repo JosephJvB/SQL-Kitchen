@@ -7,3 +7,4 @@ A juicy Web-App that acts as a GUI for a postgres database. Allowing the user to
 
 Each action performed by the user will be served with a piping hot corrisponding SQL query, to provide a holistic culinary experience. I know when I go out to a database I want to know exactly what SQL is being executed to make sure it is organic and locally sourced.
 
+Something to use: [pg-monitor](https://github.com/vitaly-t/pg-monitor). Captures logs of sql queries - can pass it a callback that accepts message data. Can probably 
