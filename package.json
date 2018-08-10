@@ -5,13 +5,14 @@
   "author": "JosephJvB <joevanbo@pm.me>",
   "license": "MIT",
   "scripts": {
-    "start": "parcel index.html",
+    "start": "node api.js",
     "test": "echo 'Everything looks fine. Carry on, citizen.'"
   },
   "devDependencies": {
     "parcel-bundler": "^1.9.7"
   },
   "dependencies": {
+    "express": "^4.16.3",
     "pg-promise": "^8.4.5",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
