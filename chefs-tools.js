@@ -20,7 +20,8 @@ const DB = pgp({
 // tableBreaker("limber_desk")
 // deleter({table: "limber_desk", condition: '"version" = 6.9'})
 // updater({table: "limber_desk", items: [{column: "version", value: 4.20}, {column: "id", value: 2}], condition: '"version" = 6.9'})
-reader({table: "limber_desk", columns: ['*'], condition: '"coffee_holder" = true'})
+reader({table: "information_schema.tables", columns: ['table_name'], condition: `table_schema = 'public'`})
+//reader({table: 'information_schema.columns', columns: ['column_name, data_type'], condition: `"table_name"='koru'`})
 
 function tableMaker({table, columns}) {
 	// columns = [{name, type}, {name, type}, ...]
