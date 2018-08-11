@@ -64,7 +64,7 @@ function reader({table, columns, condition}) {
 	// columns = ['column_name', 'column_name', ...]
 	const sqlColumns = columns.reduce((str, column, i) => `${str}${column}${i + 1 < columns.length ? ',' : ''}`, '')
 	return DB.many(`select ${sqlColumns} from ${table}${condition ? ' where ' + condition : ''}`)
-		.then(res => ({res, conn: DB.$pool})) // pass DB through to server so it can choose when to close conn
+		.then(res => res)
 		.catch(err => helper({DB, type: 'SELECT_ERROR', result: err}))
 }
 
