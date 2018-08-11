@@ -20,8 +20,8 @@ const DB = pgp({
 // tableBreaker("limber_desk")
 // deleter({table: "limber_desk", condition: '"version" = 6.9'})
 // updater({table: "limber_desk", items: [{column: "version", value: 4.20}, {column: "id", value: 2}], condition: '"version" = 6.9'})
-reader({table: "information_schema.tables", columns: ['table_name'], condition: `table_schema = 'public'`})
-//reader({table: 'information_schema.columns', columns: ['column_name, data_type'], condition: `"table_name"='koru'`})
+// reader({table: "information_schema.tables", columns: ['table_name'], condition: `table_schema = 'public'`})
+//reader({table: 'information_schema.columns', columns: ['column_name, data_type'], condition: `"table_name"='nonagon'`})
 
 function tableMaker({table, columns}) {
 	// columns = [{name, type}, {name, type}, ...]
@@ -63,8 +63,8 @@ function updater({table, items, condition}) {
 function reader({table, columns, condition}) {
 	// columns = ['column_name', 'column_name', ...]
 	const sqlColumns = columns.reduce((str, column, i) => `${str}${column}${i + 1 < columns.length ? ',' : ''}`, '')
-	DB.many(`select ${sqlColumns} from ${table}${condition ? ' where ' + condition : ''}`)
-		.then(res => helper({DB, type: 'SELECT', result: res}))
+	return DB.many(`select ${sqlColumns} from ${table}${condition ? ' where ' + condition : ''}`)
+		.then(res => ({res, conn: DB.$pool})) // pass DB through to server so it can choose when to close conn
 		.catch(err => helper({DB, type: 'SELECT_ERROR', result: err}))
 }
 
@@ -72,4 +72,13 @@ function reader({table, columns, condition}) {
 function helper ({DB, type, result}) {
 	DB.$pool.end()
 	return console.log(type + ':', result)
+}
+
+module.exports = {
+	tableMaker,
+	tableBreaker,
+	inserter,
+	deleter,
+	updater,
+	reader,
 }
