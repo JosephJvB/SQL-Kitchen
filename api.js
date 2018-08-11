@@ -15,15 +15,15 @@ api.get('/api', (req, res) => DB.reader({ // get all table names
 	}) // <--end db request
 	.then((tableNames) => Promise.all( // forEach returned table-item
 		tableNames.map((table) => DB.reader({ // find that tables' column information
-		table: "information_schema.columns",
-		columns: ['column_name', 'data_type'],
-		condition: `table_name = '${table.table_name}'`
-	})) // <--end mapped array of promises..
-) // <--end p.all
-.then((tableColumns) => res.send({
-				// send {data: [{tableName: columnData}, {}, ...]}
-				data:	tableNames.reduce((acc, table, i) => [].concat(acc, [{ [table.table_name]: tableColumns[i] }]), [])
-			}))) 
+			table: "information_schema.columns",
+			columns: ['column_name', 'data_type'],
+			condition: `table_name = '${table.table_name}'`
+		})) // <--end mapped array of promises..
+	) // <--end p.all
+	.then((tableColumns) => res.send({
+		// send {data: [{tableName: columnData}, {}, ...]}
+		data:	tableNames.reduce((acc, table, i) => [].concat(acc, [{ [table.table_name]: tableColumns[i] }]), [])
+	}))) 
 )
 // I think this has to be connected last... It's not calling next SMH my head
 api.use(bundler.middleware())
