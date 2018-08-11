@@ -14,8 +14,7 @@ render(rootComponent, rootElement)
 
 function fetchTest(url, options) {
 	return fetch(url, options)
-		.then(response => {
-			console.log('fetch response11', response)
-		})
+		.then(res => res.json())
+		.then(console.log)
 		.catch(console.log)
 }

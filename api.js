@@ -5,7 +5,11 @@ const api = express()
 const bundler = new parcelBundler('index.html', {/* can pass options here */})
 
 api.use(express.json())
-api.use(bundler.middleware())
+api.get('/api', (req, res, next) => {
+	res.send({moonmoon_ow: 'put me in your body GachiBass'})
+	next()
+})
+api.use(bundler.middleware()) // I think this has to be connected last... It's not calling next SMH my head
 
 api.listen(8080, () => console.log('Papa can you hear me...'))
 
