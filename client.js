@@ -1,6 +1,12 @@
 const render = require('react-dom').render
 const h = require('react-hyperscript')
+const {
+	connect: connectRedux,
+	Provider: ReduxProvider
+} = require('react-redux')
 const { compose, withStateHandlers } = require('recompose')
+
+const reduxStore = require('./redux')
 
 const rootElement = document.getElementById('welcome!')
 const rootComponent = compose(
@@ -25,7 +31,13 @@ const rootComponent = compose(
 	])
 )
 
-render(h(rootComponent), rootElement)
+// this is where the magic happens
+render(
+	h(ReduxProvider, { store: reduxStore }, [
+		h(rootComponent)
+	]),
+	rootElement
+)
 
 
 function fetchTest(url, options, handler) {
