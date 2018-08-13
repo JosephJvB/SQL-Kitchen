@@ -26,7 +26,13 @@ const rootComponent = connectRedux(
 			onClick: () => fetchTest('/api/home', {method: 'get'}, setHomeData)
 		}, 'FETCH TESTER'),
 		h('div', {}, [
-			homeData.map(i => h('h1', {key: Object.keys(i)[0]}, Object.keys(i)[0]))
+			homeData.map(({tableName, columnData}) => h('div', {
+				key: tableName,
+				style: { border: '2px dotted red' }
+			}, [
+				h('h1', tableName + ': '),
+				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')'))
+			]))
 		])
 	])
 )
@@ -43,7 +49,7 @@ render(
 function fetchTest(url, options, handler) {
 	return fetch(url, options)
 		.then(res => res.json())
-		.then(console.log)
-		// .then(handler) // set data in redux state
+		// .then(console.log)
+		.then(handler) // set data in redux state
 		.catch(console.log)
 }

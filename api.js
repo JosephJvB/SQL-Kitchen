@@ -22,7 +22,7 @@ api.get('/api/home', (req, res) => DB.reader({ // get all table names
 	) // <--end p.all
 	.then((tableColumns) => res.send({
 		// send {data: [{tableName: columnData}, {}, ...]}
-		data:	tableNames.reduce((acc, table, i) => [].concat(acc, [{ tableName: table.table_name, tableColumns: tableColumns[i] }]), [])
+		data:	tableNames.reduce((acc, table, i) => [].concat(acc, [{ tableName: table.table_name, columnData: tableColumns[i] }]), [])
 	}))) 
 )
 // I think this has to be connected last... It's not calling next SMH my head
