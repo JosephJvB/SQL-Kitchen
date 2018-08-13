@@ -28,7 +28,8 @@ const rootComponent = connectRedux(
 		h('div', {}, [
 			homeData.map(({tableName, columnData}) => h('div', {
 				key: tableName,
-				style: { border: '2px dotted red' }
+				style: { border: '2px dotted red' },
+				onClick: () => fetchTest(`/api/table/${tableName}`, {method: 'get'}, console.log)
 			}, [
 				h('h1', tableName + ': '),
 				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')'))

@@ -25,6 +25,10 @@ api.get('/api/home', (req, res) => DB.reader({ // get all table names
 		data:	tableNames.reduce((acc, table, i) => [].concat(acc, [{ tableName: table.table_name, columnData: tableColumns[i] }]), [])
 	}))) 
 )
+api.get('/api/table/:tableName', (req, res) => DB.reader({
+	table: req.params.tableName,
+	columns: ['*']
+}).then((rowData) => res.send({rowData})))
 // I think this has to be connected last... It's not calling next SMH my head
 api.use(bundler.middleware())
 
