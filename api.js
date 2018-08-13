@@ -7,7 +7,6 @@ const api = express()
 const DB = require('./chefs-tools')
 
 api.use(express.json())
-// I HAVE TO RETURN DB.reader OR IT BREAKS?? so I'm not calling next() but also it's not breaking...wtf
 api.get('/api/home', (req, res) => DB.reader({ // get all table names
 		table: "information_schema.tables",
 		columns: ['table_name'],
@@ -26,9 +25,11 @@ api.get('/api/home', (req, res) => DB.reader({ // get all table names
 	}))) 
 )
 api.get('/api/table/:tableName', (req, res) => DB.reader({
-	table: req.params.tableName,
-	columns: ['*']
-}).then((rowData) => res.send({rowData})))
+		table: req.params.tableName,
+		columns: ['*']
+	})
+	.then((rowData) => res.send({rowData}))
+)
 // I think this has to be connected last... It's not calling next SMH my head
 api.use(bundler.middleware())
 
