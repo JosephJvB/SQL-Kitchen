@@ -6,15 +6,14 @@ const { Provider: ReduxProvider } = require('react-redux')
 const {
 	createStore,
 	applyMiddleware,
-	compose: composeRedux,
+	combineReducers,
 } = require('redux')
 // extended redux stuff
 const thunkMiddleware = require('redux-thunk').default
 const getPersistMiddleware = require('redux-persist-middleware').default
 const { getConfiguredCache } = require('money-clip')
-
 // local modules
-const { rootReducer } = require('./redux')
+const { joesReducers } = require('./redux')
 const rootComponent = require('./root-component')
 const rootElement = document.getElementById('welcome!')
 
@@ -24,18 +23,16 @@ const cache = getConfiguredCache({
 	maxAge: 1200000, // assumption that it accepts ms
 	name: 'Petunia',
 })
-
 const persistMiddleware = getPersistMiddleware({
 	cacheFn: cache.set,
 	logger: console.info,
 	actionMap: { SET_HOME_DATA: ['homeData'] }
 })
 
-
 // wrap up in a warm cache jacket
 cache.getAll().then((data) => {
 	const reduxStore = createStore(
-		rootReducer,
+		combineReducers(joesReducers),
 		data, // cacheData
 		applyMiddleware(thunkMiddleware, persistMiddleware)
 	)
