@@ -6,27 +6,30 @@ const {
 } = require('react-redux')
 
 const {
-	getPants,
-	reduxStore
+	reduxStore,
+	setHomeData,
 } = require('./redux')
 
 const rootElement = document.getElementById('welcome!')
 const rootComponent = connectRedux(
-	state => ({pants: state.pants}), // mapStateToProps
-	{ getPants } // pass actions as second argument to bind dispatch
-)(props => {
-	!props.pants.length && props.getPants()
-	return h('div', {}, [
+	({homeData}) => ({  // mapStateToProps
+		homeData,
+	}),
+	{ setHomeData } // pass actions as second argument to bind dispatch
+)(({
+	// props
+	homeData,
+	setHomeData,
+}) => h('div', {}, [
 		h('h3', 'Welcome madame(s) or monsieur(s) a le SQL-Kitchen'),
 		h('button', {
-			onClick: () => fetchTest('/api', {method: 'get'}, props.loadData)
+			onClick: () => fetchTest('/api', {method: 'get'}, setHomeData)
 		}, 'FETCH TESTER'),
 		h('div', {}, [
-			// props.data && props.data.map(i => h('h1', {key: Object.keys(i)[0]}, Object.keys(i)[0]))
-			props.pants && props.pants.map(p => h('p',{key: p}, p))
+			homeData.map(i => h('h1', {key: Object.keys(i)[0]}, Object.keys(i)[0]))
 		])
 	])
-})
+)
 
 // this is where the magic happens
 render(
@@ -40,7 +43,6 @@ render(
 function fetchTest(url, options, handler) {
 	return fetch(url, options)
 		.then(res => res.json())
-		// .then(handler)
-		.then(console.log)
+		.then(handler) // set data in redux state
 		.catch(console.log)
 }

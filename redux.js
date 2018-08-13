@@ -6,25 +6,27 @@ const {
 } = require('redux')
 const thunkMiddleware = require('redux-thunk').default
 
-const reducers = combineReducers({
-  pants
+// reducers
+function homeData(state = [], action) {
+  return action.type === 'SET_HOME_DATA' ? [].concat(state, action.data) : state
+}
+
+// actions
+const setHomeData = ({data}) => ({
+  type: 'SET_HOME_DATA',
+  data
 })
 
+// redux config
+const reducers = combineReducers({
+  homeData,
+})
 const reduxStore = createStore(reducers, composeRedux(
   applyMiddleware(thunkMiddleware),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 ))
 
-function pants(state = [], action) { // placeholder reducer
-  return action.type === 'GET_PANTS' ? [].concat(state, action.pants) : state
-}
-
-const getPants = () => ({
-  type: 'GET_PANTS',
-  pants: ['short', 'skirt', 'long-jacket']
-}) 
-
 module.exports = {
-  getPants,
-  reduxStore
+  reduxStore,
+  setHomeData,
 }
