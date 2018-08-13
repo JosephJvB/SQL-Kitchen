@@ -19,4 +19,12 @@ function pants(state = [], action) { // placeholder reducer
   return action.type === 'GET_PANTS' ? [].concat(state, action.pants) : state
 }
 
-module.exports = reduxStore
+const getPants = () => ({
+  type: 'GET_PANTS',
+  pants: ['short', 'skirt', 'long-jacket']
+}) 
+
+module.exports = {
+  getPants,
+  reduxStore
+}
