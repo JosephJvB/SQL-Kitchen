@@ -2,10 +2,7 @@
 const render = require('react-dom').render
 const h = require('react-hyperscript')
 // redux
-const {
-	connect: connectRedux,
-	Provider: ReduxProvider
-} = require('react-redux')
+const { Provider: ReduxProvider } = require('react-redux')
 const {
 	createStore,
 	applyMiddleware,
@@ -16,12 +13,12 @@ const thunkMiddleware = require('redux-thunk').default
 const getPersistMiddleware = require('redux-persist-middleware').default
 const { getConfiguredCache } = require('money-clip')
 
-const {
-	rootReducer,
-	setHomeData,
-} = require('./redux')
+// local modules
+const { rootReducer } = require('./redux')
+const rootComponent = require('./root-component')
+const rootElement = document.getElementById('welcome!')
 
-// PERSIST CONFIG
+// PERSIST CONFIG: can move these to a util place if I wanted
 const cache = getConfiguredCache({
 	version: 1, // what does this do? Look at money-clip..
 	maxAge: 1200000, // assumption that it accepts ms
@@ -34,33 +31,6 @@ const persistMiddleware = getPersistMiddleware({
 	actionMap: { SET_HOME_DATA: ['homeData'] }
 })
 
-const rootElement = document.getElementById('welcome!')
-const rootComponent = connectRedux(
-	({homeData}) => ({  // mapStateToProps
-		homeData,
-	}),
-	{ setHomeData } // pass actions as second argument to bind dispatch
-)(({
-	// props
-	homeData,
-	setHomeData,
-}) => h('div', {}, [
-		h('h3', 'Welcome madame(s) or monsieur(s) a le SQL-Kitchen'),
-		h('button', {
-			onClick: () => fetchTest('/api/home', {method: 'get'}, setHomeData)
-		}, 'FETCH TESTER'),
-		h('div', {}, [
-			homeData.map(({tableName, columnData}) => h('div', {
-				key: tableName,
-				style: { border: '2px dotted red' },
-				onClick: () => fetchTest(`/api/table/${tableName}`, {method: 'get'}, console.log)
-			}, [
-				h('h1', tableName + ': '),
-				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')'))
-			]))
-		])
-	])
-)
 
 // wrap up in a warm cache jacket
 cache.getAll().then((data) => {
@@ -77,12 +47,3 @@ cache.getAll().then((data) => {
 		rootElement
 	)
 })
-
-
-function fetchTest(url, options, handler) {
-	return fetch(url, options)
-		.then(res => res.json())
-		// .then(console.log)
-		.then(handler) // set data in redux state
-		.catch(console.log)
-}
