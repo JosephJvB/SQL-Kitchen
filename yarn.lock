@@ -2045,6 +2045,10 @@ iconv-lite@^0.4.4, iconv-lite@~0.4.13:
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
+idb-keyval@3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/idb-keyval/-/idb-keyval-3.0.3.tgz#436f6abc49723edac01ddb93210801424b2b623a"
+
 ieee754@^1.1.4:
   version "1.1.12"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.12.tgz#50bf24e5b9c8bb98af4964c941cdb0918da7b60b"
@@ -2590,6 +2594,12 @@ mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@~0.5.1:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
+
+money-clip@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/money-clip/-/money-clip-2.1.0.tgz#9acfe42fd98861f841723e38f8b5fb2611a97bf2"
+  dependencies:
+    idb-keyval "3.0.3"
 
 ms@2.0.0:
   version "2.0.0"
@@ -3756,6 +3766,10 @@ reduce-function-call@^1.0.1:
   resolved "https://registry.yarnpkg.com/reduce-function-call/-/reduce-function-call-1.0.2.tgz#5a200bf92e0e37751752fe45b0ab330fd4b6be99"
   dependencies:
     balanced-match "^0.4.2"
+
+redux-persist-middleware@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/redux-persist-middleware/-/redux-persist-middleware-1.0.1.tgz#3c2b4bdc52d7cebf5685989222268e689689c5e9"
 
 redux-thunk@^2.3.0:
   version "2.3.0"
