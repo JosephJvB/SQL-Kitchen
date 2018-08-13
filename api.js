@@ -8,7 +8,7 @@ const DB = require('./chefs-tools')
 
 api.use(express.json())
 // I HAVE TO RETURN DB.reader OR IT BREAKS?? so I'm not calling next() but also it's not breaking...wtf
-api.get('/api', (req, res) => DB.reader({ // get all table names
+api.get('/api/home', (req, res) => DB.reader({ // get all table names
 		table: "information_schema.tables",
 		columns: ['table_name'],
 		condition: `table_schema = 'public'`

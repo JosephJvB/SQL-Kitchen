@@ -23,7 +23,7 @@ const rootComponent = connectRedux(
 }) => h('div', {}, [
 		h('h3', 'Welcome madame(s) or monsieur(s) a le SQL-Kitchen'),
 		h('button', {
-			onClick: () => fetchTest('/api', {method: 'get'}, setHomeData)
+			onClick: () => fetchTest('/api/home', {method: 'get'}, setHomeData)
 		}, 'FETCH TESTER'),
 		h('div', {}, [
 			homeData.map(i => h('h1', {key: Object.keys(i)[0]}, Object.keys(i)[0]))
@@ -43,6 +43,7 @@ render(
 function fetchTest(url, options, handler) {
 	return fetch(url, options)
 		.then(res => res.json())
-		.then(handler) // set data in redux state
+		.then(console.log)
+		// .then(handler) // set data in redux state
 		.catch(console.log)
 }
