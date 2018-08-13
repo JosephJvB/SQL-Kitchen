@@ -1,10 +1,4 @@
-const {
-	createStore,
-	applyMiddleware,
-	compose: composeRedux,
-	combineReducers,
-} = require('redux')
-const thunkMiddleware = require('redux-thunk').default
+const { combineReducers } = require('redux')
 
 // reducers
 function homeData(state = [], action) {
@@ -18,15 +12,11 @@ const setHomeData = ({data}) => ({
 })
 
 // redux config
-const reducers = combineReducers({
+const rootReducer = combineReducers({
   homeData,
 })
-const reduxStore = createStore(reducers, composeRedux(
-  applyMiddleware(thunkMiddleware),
-  window.devToolsExtension ? window.devToolsExtension() : f => f
-))
 
 module.exports = {
-  reduxStore,
+  rootReducer,
   setHomeData,
 }
