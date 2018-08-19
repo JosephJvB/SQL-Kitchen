@@ -40,9 +40,9 @@ function tableBreaker(table) {
 function inserter({table, items}) {
 	//items = [{column, value}, {column, value}, ...]
 	const sqlColumns = items.reduce((str, item, i) => `${str}${item.column}${i + 1 < items.length ? ',' : ''}`, '')
-	const sqlValues = items.reduce((str, item, i) => `${str}${item.value}${i + 1 < items.length ? ',' : ''}`, '')
-	DB.many(`insert into ${table} (${sqlColumns}) values (${sqlValues}) returning *`)
-		.then(res => helper({DB, type: 'INSERT', result: res}))
+	const sqlValues = items.reduce((str, item, i) => `${str}'${item.value}'${i + 1 < items.length ? ',' : ''}`, '')
+	return DB.many(`insert into ${table} (${sqlColumns}) values (${sqlValues}) returning *`)
+		.then(res => res)
 		.catch(err => helper({DB, type: 'INSERT_ERROR', result: err}))
 }
 
