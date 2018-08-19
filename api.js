@@ -30,9 +30,7 @@ api.get('/api/table/:tableName', (req, res) => DB.reader({
 	})
 	.then((rowData) => res.send({rowData}))
 )
-// items is an array of objects
-// each object has a column and value property
-// table is a string
+// req.body[table/items]
 api.post('/api/newRow', ({body: {table, items}}, res) => DB.inserter({table, items})
 	.then(result => res.send(result))
 )

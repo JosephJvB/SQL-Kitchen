@@ -27,17 +27,19 @@ module.exports = connectRedux(
 				}, tableName + ': '),
 				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')')),
 				tableName === 'koru' && h('button', {
-					onClick: () => fetchTest('/api/newRow', {method: 'post', body: {table: tableName, items: [{column: 'material', value: 'mountain momma'}]}, headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json'
-					}}, console.log)
-				}, 'TAKE ME')
+					onClick: () => fetchTest(
+						'/api/newRow',
+						{method: 'post', body: {table: tableName, items: [{column: 'material', value: 'mountain momma'}]}, headers: {Accept: 'application/json', 'Content-Type': 'application/json'}}, // must include headers[Accept/contentType] on POST
+						console.log
+					)
+				}, 'TAKE ME HOME')
 			]))
 		])
 	])
 )
 
 function fetchTest(url, options, handler) {
+	// if options has a body, stringify it
 	return fetch(url, options.body ? Object.assign(options, {body: JSON.stringify(options.body)}) : options)
 		.then(res => res.json())
 		// .then(console.log)
