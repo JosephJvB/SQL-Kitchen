@@ -26,13 +26,13 @@ const DB = pgp({
 function tableMaker({table, columns}) {
 	// columns = [{name, type}, {name, type}, ...]
 	const sqlColumns = columns.reduce((str, column, i) => `${str}${column.name} ${column.type}${i + 1 < columns.length ? ',' : ''}`, '')
-	DB.none(`create table ${table} (${sqlColumns})`)
+	return DB.none(`create table ${table} (${sqlColumns})`)
 		.then(res => helper({DB, type: 'CREATE_TABLE', result: res}))
 		.catch(err => helper({DB, type: 'CREATE_TABLE ERROR', result: err}))
 }
 
 function tableBreaker(table) {
-	DB.none(`drop table "${table}"`)
+	return DB.none(`drop table "${table}"`)
 		.then(res => helper({DB, type: 'DROP_TABLE', result: res}))
 		.catch(err => helper({DB, type: 'DROP_TABLE ERROR', result: err}))
 }
@@ -40,14 +40,14 @@ function tableBreaker(table) {
 function inserter({table, items}) {
 	//items = [{column, value}, {column, value}, ...]
 	const sqlColumns = items.reduce((str, item, i) => `${str}${item.column}${i + 1 < items.length ? ',' : ''}`, '')
-	const sqlValues = items.reduce((str, item, i) => `${str}${item.value}${i + 1 < items.length ? ',' : ''}`, '')
-	DB.many(`insert into ${table} (${sqlColumns}) values (${sqlValues}) returning *`)
-		.then(res => helper({DB, type: 'INSERT', result: res}))
+	const sqlValues = items.reduce((str, item, i) => `${str}'${item.value}'${i + 1 < items.length ? ',' : ''}`, '')
+	return DB.many(`insert into ${table} (${sqlColumns}) values (${sqlValues}) returning *`)
+		.then(res => res)
 		.catch(err => helper({DB, type: 'INSERT_ERROR', result: err}))
 }
 
 function deleter({table, condition}) {
-	DB.many(`delete from ${table} where ${condition} returning *`)
+	return DB.many(`delete from ${table} where ${condition} returning *`)
 		.then(res => helper({DB, type: 'DELETE', result: res}))
 		.catch(err => helper({DB, type: 'DELETE_ERROR', result: err}))
 }
@@ -55,7 +55,7 @@ function deleter({table, condition}) {
 function updater({table, items, condition}) {
 	// items = [{column, value}, {column, value}, ...]
 	const sqlItems = items.reduce((str, item, i) => `${str}${item.column} = ${item.value}${i + 1 < items.length ? ',' : ''}`, '')
-	DB.many(`update ${table} set ${sqlItems} where ${condition} returning *`)
+	return DB.many(`update ${table} set ${sqlItems} where ${condition} returning *`)
 		.then(res => helper({DB, type: 'UPDATE', result: res}))
 		.catch(err => helper({DB, type: 'UPDATE_ERROR', result: err}))
 }

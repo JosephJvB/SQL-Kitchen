@@ -21,17 +21,26 @@ module.exports = connectRedux(
 			homeData.map(({tableName, columnData}) => h('div', {
 				key: tableName,
 				style: { border: '2px dotted red' },
-				onClick: () => fetchTest(`/api/table/${tableName}`, {method: 'get'}, console.log)
 			}, [
-				h('h1', tableName + ': '),
-				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')'))
+				h('h1', {
+					onClick: () => fetchTest(`/api/table/${tableName}`, {method: 'get'}, console.log)
+				}, tableName + ': '),
+				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')')),
+				tableName === 'koru' && h('button', {
+					onClick: () => fetchTest(
+						'/api/newRow',
+						{method: 'post', body: {table: tableName, items: [{column: 'material', value: 'mountain momma'}]}, headers: {Accept: 'application/json', 'Content-Type': 'application/json'}}, // must include headers[Accept/contentType] on POST
+						console.log
+					)
+				}, 'TAKE ME HOME')
 			]))
 		])
 	])
 )
 
 function fetchTest(url, options, handler) {
-	return fetch(url, options)
+	// if options has a body, stringify it
+	return fetch(url, options.body ? Object.assign(options, {body: JSON.stringify(options.body)}) : options)
 		.then(res => res.json())
 		// .then(console.log)
 		.then(handler) // set data in redux state

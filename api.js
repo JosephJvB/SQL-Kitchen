@@ -22,13 +22,17 @@ api.get('/api/home', (req, res) => DB.reader({ // get all table names
 	.then((tableColumns) => res.send({
 		// send {data: [{tableName: columnData}, {}, ...]}
 		data:	tableNames.reduce((acc, table, i) => [].concat(acc, [{ tableName: table.table_name, columnData: tableColumns[i] }]), [])
-	}))) 
+	})))
 )
 api.get('/api/table/:tableName', (req, res) => DB.reader({
 		table: req.params.tableName,
 		columns: ['*']
 	})
 	.then((rowData) => res.send({rowData}))
+)
+// req.body[table/items]
+api.post('/api/newRow', ({body: {table, items}}, res) => DB.inserter({table, items})
+	.then(result => res.send(result))
 )
 // I think this has to be connected last... It's not calling next SMH my head
 api.use(bundler.middleware())
