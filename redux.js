@@ -15,10 +15,9 @@ const setHomeData = ({data}) => ({
 })
 
 const setTableData = ({rowData}) => ({
-  type: 'SET_HOME_DATA',
+  type: 'SET_TABLE_DATA',
   rowData
 })
-  // console.log(data)
 
 module.exports = {
   joesReducers: {

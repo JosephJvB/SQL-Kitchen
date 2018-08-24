@@ -26,7 +26,10 @@ const cache = getConfiguredCache({
 const persistMiddleware = getPersistMiddleware({
 	cacheFn: cache.set,
 	logger: console.info,
-	actionMap: { SET_HOME_DATA: ['homeData'] }
+	actionMap: {
+		SET_HOME_DATA: ['homeData'],
+		SET_TABLE_DATA: ['tableData']
+	}
 })
 
 // wrap up in a warm cache jacket

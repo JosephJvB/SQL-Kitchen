@@ -15,6 +15,7 @@ module.exports = (path, options, actions) => {
 		options.body ? Object.assign(options, {body: JSON.stringify(options.body)}) : options
 	)
 	.then(res => res.json())
+	// .then(console.log)
 	.then(actions.success) // tell ui-state that fetch success..
 	.catch(err => {
 		// actions.setFetchError() - tell ui-state that fetch failed
