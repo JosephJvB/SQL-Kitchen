@@ -1,7 +1,12 @@
 // reducers
-function homeData(state = [], action) {
-  return action.type === 'SET_HOME_DATA' ? [].concat(action.data) : state
-}
+const homeData = (state = [], action) => action.type === 'SET_HOME_DATA'
+  ? [].concat(action.data)
+  : state
+
+// this will change big time when add/delete row functionality comes thru
+const tableData = (state = [], action) => action.type === 'SET_TABLE_DATA'
+  ? [].concat(action.rowData)
+  : state
 
 // actions
 const setHomeData = ({data}) => ({
@@ -9,9 +14,17 @@ const setHomeData = ({data}) => ({
   data
 })
 
+const setTableData = ({rowData}) => ({
+  type: 'SET_HOME_DATA',
+  rowData
+})
+  // console.log(data)
+
 module.exports = {
   joesReducers: {
-    homeData
+    homeData,
+    tableData,
   },
   setHomeData,
+  setTableData,
 }
