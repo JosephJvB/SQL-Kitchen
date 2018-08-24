@@ -32,7 +32,7 @@ api.get('/api/table/:tableName', (req, res) => DB.reader({
 )
 // req.body[table/items]
 api.post('/api/newRow', ({body: {table, items}}, res) => DB.inserter({table, items})
-	.then(result => res.send(result))
+	.then(res.send)
 )
 // I think this has to be connected last... It's not calling next SMH my head
 api.use(bundler.middleware())

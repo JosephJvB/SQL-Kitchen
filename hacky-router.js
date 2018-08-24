@@ -6,6 +6,6 @@ const Table = require('./table-page')
 
 module.exports = () => pathname === '/'
   ? h(Home)
-    : pathname === '/table'
+    : pathname.includes('/table')
     ? h(Table)
   : h('h1', 'You broke my app! Ya great big bully')
