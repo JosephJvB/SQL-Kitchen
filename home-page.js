@@ -2,17 +2,22 @@ const h = require('react-hyperscript')
 const { connect: connectRedux } = require('react-redux')
 
 const joeFetch = require('./fetch-util')
-const { setHomeData } = require('./redux')
+const {
+	setHomeData,
+	setTableData,
+} = require('./redux')
 
 module.exports = connectRedux(
-	({homeData}) => ({  // mapStateToProps
-		homeData,
-	}),
-	{ setHomeData } // pass actions as second argument to bind dispatch
+	({homeData}) => ({homeData}), // map state to props
+	{ // pass actions as second argument to bind dispatch to actions
+		setHomeData,
+		setTableData,
+	}
 )(({
 	// props
 	homeData,
 	setHomeData,
+	setTableData,
 }) => h('div', {}, [
 		h('h3', 'Welcome madame(s) or monsieur(s) a le SQL-Kitchen'),
 		h('button', {
@@ -28,11 +33,14 @@ module.exports = connectRedux(
 				style: { border: '2px dotted red' },
 			}, [
 				h('h1', {
-					onClick: () => joeFetch(
+					onClick: () => {
+					window.location.pathname = `/table/${tableName}`
+					return joeFetch(
 						`/api/table/${tableName}`,
 						{method: 'get'},
-						{success: console.log}
+						{success: setTableData}
 					)
+				}
 				}, tableName + ': '),
 				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')')),
 				tableName === 'koru' && h('button', {
