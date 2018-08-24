@@ -14,7 +14,7 @@ const getPersistMiddleware = require('redux-persist-middleware').default
 const { getConfiguredCache } = require('money-clip')
 // local modules
 const { joesReducers } = require('./redux')
-const rootComponent = require('./root-component')
+const HackyRouter = require('./hacky-router')
 const rootElement = document.getElementById('welcome!')
 
 // PERSIST CONFIG: can move these to a util place if I wanted
@@ -39,7 +39,7 @@ cache.getAll().then((data) => {
 	// this is where the magic happens
 	render(
 		h(ReduxProvider, { store: reduxStore }, [
-			h(rootComponent)
+			h(HackyRouter)
 		]),
 		rootElement
 	)
