@@ -1,6 +1,6 @@
 // reducers
 function homeData(state = [], action) {
-  return action.type === 'SET_HOME_DATA' ? [].concat(state, action.data) : state
+  return action.type === 'SET_HOME_DATA' ? [].concat(action.data) : state
 }
 
 // actions
