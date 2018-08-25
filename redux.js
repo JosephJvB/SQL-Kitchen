@@ -13,7 +13,7 @@ function tableData (state = [], action) {
 
 function view (state = {location: 'HOME'}, action) {
   return action.type === 'CHANGE_VIEW'
-    ? action.location
+    ? action.viewData
     : state
 }
 
@@ -28,9 +28,9 @@ const setTableData = ({rowData}) => ({
   rowData
 })
 
-const changeView = (location) => ({
+const changeView = (viewData) => ({
   type: 'CHANGE_VIEW',
-  location
+  viewData // lazy rename of action.payload 
 })
 
 // trying different exports cos that seems like fun
