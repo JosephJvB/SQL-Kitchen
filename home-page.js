@@ -6,7 +6,7 @@ const {
 	changeView,
 	setHomeData,
 	setTableData,
-} = require('./redux')
+} = require('./redux').joesActions
 
 module.exports = connectRedux(
 	({homeData}) => ({homeData}), // map state to props

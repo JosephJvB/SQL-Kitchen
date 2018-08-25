@@ -33,12 +33,13 @@ const changeView = (location) => ({
   location
 })
 
-module.exports = {
-  joesReducers: {
-    homeData,
-    tableData,
-    view
-  },
+// trying different exports cos that seems like fun
+module.exports.joesReducers = {
+  homeData,
+  tableData,
+  view
+}
+module.exports.joesActions = {
   changeView,
   setHomeData,
   setTableData,

@@ -13,7 +13,7 @@ const thunkMiddleware = require('redux-thunk').default
 const getPersistMiddleware = require('redux-persist-middleware').default
 const { getConfiguredCache } = require('money-clip')
 // local modules
-const { joesReducers } = require('./redux')
+const joesReducers = require('./redux').joesReducers
 const HackyRouter = require('./hacky-router')
 const rootElement = document.getElementById('welcome!')
 
