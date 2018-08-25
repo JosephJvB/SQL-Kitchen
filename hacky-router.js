@@ -15,8 +15,8 @@ module.exports = connectRedux(
   params
 }) => {
     switch(location) {
-      case 'HOME': return h(Home, params)
-      case 'TABLE': return h(Table, params)
+      case 'HOME': return h(Home, {params})
+      case 'TABLE': return h(Table, {params})
       default: return h('h1', {
         onClick: () => changeView({location: 'HOME'}) // take me home country roads
       }, 'You broke my app! Ya great big bully')
