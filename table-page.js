@@ -1,15 +1,23 @@
 const h = require('react-hyperscript')
 const { connect: connectRedux } = require('react-redux')
 
+const { changeView } = require('./redux').joesActions
+
 module.exports = connectRedux(
   mrGetter, // statik selektah
-  {} // wrap actions in dispatch
+  { changeView } // wrap actions in dispatch
 )(({
   // props
+  changeView,
   smoovData,
-}) => h('ul', [
-  // print table-ish format
-  smoovData.map((item, i) => h('li', {key: i},  '|-- ' + item.join(' --|-- ') + ' --|'))
+}) => h('div', [
+    h('ul', [
+      // print table-ish format
+      smoovData.map((item, i) => h('li', {key: i},  '|-- ' + item.join(' --|-- ') + ' --|'))
+    ]),
+    h('button', {
+      onClick: () => changeView({location: 'HOME'})
+    }, 'BACK THAT UP')
   ])
 )
 
