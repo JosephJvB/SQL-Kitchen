@@ -2,14 +2,14 @@ const h = require('react-hyperscript')
 const { connect: connectRedux } = require('react-redux')
 
 module.exports = connectRedux(
-  mrGetter, // mapper
+  mrGetter, // statik selektah
   {} // wrap actions in dispatch
 )(({
   // props
-  itemData,
+  smoovData,
 }) => h('ul', [
-  // print bootleg table format
-  itemData.map((item, i) => h('li', {key: i},  '|-- ' + item.join(' --|-- ') + ' --|'))
+  // print table-ish format
+  smoovData.map((item, i) => h('li', {key: i},  '|-- ' + item.join(' --|-- ') + ' --|'))
   ])
 )
 
@@ -20,7 +20,7 @@ function mrGetter (state) {
     acc.push(Object.keys(item).map(val => item[val])) // push item data for all items
     return acc
   }, [])
-  return { itemData: smoovData }
+  return { smoovData }
 }
 /*
   tableData comes in looking like [{col: value, col: value, col: value}, {}, ...]
