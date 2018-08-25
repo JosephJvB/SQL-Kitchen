@@ -1,14 +1,23 @@
-// reducers
-const homeData = (state = [], action) => action.type === 'SET_HOME_DATA'
+// reducers = functions
+function homeData (state = [], action) {
+ return action.type === 'SET_HOME_DATA'
   ? [].concat(action.data)
   : state
+}
 
-// this will change big time when add/delete row functionality comes thru
-const tableData = (state = [], action) => action.type === 'SET_TABLE_DATA'
+function tableData (state = [], action) {
+  return action.type === 'SET_TABLE_DATA'
   ? [].concat(action.rowData)
   : state
+}
 
-// actions
+function view (state = {location: 'HOME'}, action) {
+  return action.type === 'CHANGE_VIEW'
+    ? action.location
+    : state
+}
+
+// actions = consts. why? because I say so
 const setHomeData = ({data}) => ({
   type: 'SET_HOME_DATA',
   data
@@ -19,11 +28,18 @@ const setTableData = ({rowData}) => ({
   rowData
 })
 
+const changeView = (location) => ({
+  type: 'CHANGE_VIEW',
+  location
+})
+
 module.exports = {
   joesReducers: {
     homeData,
     tableData,
+    view
   },
+  changeView,
   setHomeData,
   setTableData,
 }

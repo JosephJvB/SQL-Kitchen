@@ -28,7 +28,8 @@ const persistMiddleware = getPersistMiddleware({
 	logger: console.info,
 	actionMap: {
 		SET_HOME_DATA: ['homeData'],
-		SET_TABLE_DATA: ['tableData']
+		SET_TABLE_DATA: ['tableData'],
+		CHANGE_VIEW: ['view']
 	}
 })
 
