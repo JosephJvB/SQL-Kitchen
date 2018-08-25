@@ -3,6 +3,7 @@ const { connect: connectRedux } = require('react-redux')
 
 const joeFetch = require('./fetch-util')
 const {
+	changeView,
 	setHomeData,
 	setTableData,
 } = require('./redux')
@@ -10,11 +11,13 @@ const {
 module.exports = connectRedux(
 	({homeData}) => ({homeData}), // map state to props
 	{ // pass actions as second argument to bind dispatch to actions
+		changeView,
 		setHomeData,
 		setTableData,
 	}
 )(({
 	// props
+	changeView,
 	homeData,
 	setHomeData,
 	setTableData,
@@ -34,7 +37,7 @@ module.exports = connectRedux(
 			}, [
 				h('h1', {
 					onClick: () => {
-					window.location.pathname = `/table/${tableName}`
+					changeView({location: 'TABLE', params: tableName})
 					return joeFetch(
 						`/api/table/${tableName}`,
 						{method: 'get'},

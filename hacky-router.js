@@ -1,11 +1,17 @@
 const h = require('react-hyperscript')
-const { location: { pathname } } = window
+const { connect: connectRedux } = require('react-redux')
 
 const Home = require('./home-page')
 const Table = require('./table-page')
 
-module.exports = () => pathname === '/'
-  ? h(Home)
-    : pathname.includes('/table')
-    ? h(Table)
-  : h('h1', 'You broke my app! Ya great big bully')
+module.exports = connectRedux(
+  ({view: {location, params}}) => ({location, params}), // selector
+  {} // actions go here
+)(({location, params}) => {
+    switch(location) {
+      case 'HOME': return h(Home, params)
+      case 'TABLE': return h(Table, params)
+      default: return h('h1', 'You broke my app! Ya great big bully')
+    }
+  }
+)
