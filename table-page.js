@@ -32,7 +32,7 @@ function mrGetter ({tableData, homeData}, {params: tableName}) {
     acc.push(Object.keys(item).map(val => item[val])) // push item data for all items
     return acc
   }, [])
-  // shape metaData from homeData(redux)
+  // find tableMetaData from homeData, get columnMetaData, shape that with reduce
   const metaData = homeData.find(table => table.tableName === tableName).columnData.reduce((acc, col, i) => {
     acc.push(col.column_name + '(' + col.data_type + ')')
     return acc
@@ -41,18 +41,21 @@ function mrGetter ({tableData, homeData}, {params: tableName}) {
 }
 /*
   meta data from homeData.columnData (where homeData[i].tableName === params(aka tableName))
-  tableData comes in looking like [{col: value, col: value, col: value}, {}, ...]
-  columns look like this:
+  end result:
   |---name(type)---|---name(type)---|---name(type)---| - from homeData
   |---val---|---val---|---val---| - tableData[0]
   |---val---|---val---|---val---| - tableData[1]
   ...etc
+  
+  columnData comes in looking like [{colName: name, coldatatype: type}, {}, ...]
+  create metaData = ['colName(type)', 'colName(type)', ...]
+  1-D array of strings
 
-  create object(ARRAY) like this:
-  itemData = [
-    ['colName+colType', 'colName+colType', ..],
+  tableData comes in looking like [{col: value, col: value, col: value}, {}, ...]
+  create itemData = [
     ['value', 'value', ...], - item1,
-    [], - item2
+    ['value', 'value', ...], - item2,
     ...
   ]
+  2-D array: array of arrays of strings [[string, string, ...]]
 */
