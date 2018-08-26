@@ -1,7 +1,10 @@
 const h = require('react-hyperscript')
 const { connect: connectRedux } = require('react-redux')
 
-const { changeView } = require('./redux').joesActions
+const {
+  changeView,
+  nukeRedux,
+} = require('./redux').joesActions
 const Home = require('./home-page')
 const Table = require('./table-page')
 
@@ -12,8 +15,9 @@ module.exports = connectRedux(
   // props
   changeView,
   location,
-  params
+  params,
 }) => {
+  // nukeRedux()
     switch(location) {
       case 'HOME': return h(Home, {params})
       case 'TABLE': return h(Table, {params})

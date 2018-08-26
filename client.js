@@ -27,6 +27,7 @@ const persistMiddleware = getPersistMiddleware({
 	cacheFn: cache.set,
 	logger: console.info,
 	actionMap: {
+		BURNTHEMALL: ['homeData', 'tableData', 'view'],
 		SET_HOME_DATA: ['homeData'],
 		SET_TABLE_DATA: ['tableData'],
 		CHANGE_VIEW: ['view']
@@ -43,7 +44,7 @@ cache.getAll().then((data) => {
 	// this is where the magic happens
 	render(
 		h(ReduxProvider, { store: reduxStore }, [
-			h(HackyRouter)
+			h(HackyRouter),
 		]),
 		rootElement
 	)

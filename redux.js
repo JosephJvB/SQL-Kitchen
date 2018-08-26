@@ -1,17 +1,20 @@
 // reducers = functions
 function homeData (state = [], action) {
- return action.type === 'SET_HOME_DATA'
+  if(action.type === 'BURNTHEMALL') return []
+  return action.type === 'SET_HOME_DATA'
   ? [].concat(action.data)
   : state
 }
 
 function tableData (state = [], action) {
+  if(action.type === 'BURNTHEMALL') return []
   return action.type === 'SET_TABLE_DATA'
   ? [].concat(action.rowData)
   : state
 }
 
 function view (state = {location: 'HOME'}, action) {
+  if(action.type === 'BURNTHEMALL') return {location: 'HOME'}
   return action.type === 'CHANGE_VIEW'
     ? action.viewData
     : state
@@ -28,6 +31,15 @@ const setTableData = ({rowData}) => ({
   rowData
 })
 
+const removeTableItem = ([{id}]) => ({
+  type: 'REMOVE_TABLE_ITEM',
+  id
+})
+
+const nukeRedux = () => ({
+  type: 'BURNTHEMALL'
+})
+
 const changeView = (viewData) => ({
   type: 'CHANGE_VIEW',
   viewData // lazy rename of action.payload 
@@ -41,6 +53,8 @@ module.exports.joesReducers = {
 }
 module.exports.joesActions = {
   changeView,
+  nukeRedux,
+  removeTableItem,
   setHomeData,
   setTableData,
 }
