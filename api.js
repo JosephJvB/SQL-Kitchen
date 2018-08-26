@@ -43,7 +43,7 @@ api.post('/api/newRow', ({body: {table, items}}, res) => DB.inserter({table, ite
 
 // DELETE a row in a table
 // do I want a 'soft-delete'? eg: update with 'deleted' flag means read requests will ignore the resource
-api.delete('/api/deleteRow', ({body: {table, id}}, res) => DB.deleter({
+api.delete('/api/deleteRow/:table/:id', ({params:  {table, id}}, res) => DB.deleter({
 		table,
 		condition: `id = ${id}`
 	})
