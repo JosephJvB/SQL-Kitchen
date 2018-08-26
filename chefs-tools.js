@@ -48,7 +48,7 @@ function inserter({table, items}) {
 
 function deleter({table, condition}) {
 	return DB.many(`delete from ${table} where ${condition} returning *`)
-		.then(res => helper({DB, type: 'DELETE', result: res}))
+		.then(res => res)
 		.catch(err => helper({DB, type: 'DELETE_ERROR', result: err}))
 }
 

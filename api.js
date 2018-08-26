@@ -38,7 +38,7 @@ api.get('/api/table/:tableName', (req, res) => DB.reader({
 // CREATE a new row in a table
 // question to ask: put vs post? I dont have a good answer right now..yikes, that's a weakness
 api.post('/api/newRow', ({body: {table, items}}, res) => DB.inserter({table, items})
-	.then(res.send)
+	.then(data => res.send(data))
 )
 
 // DELETE a row in a table
@@ -47,14 +47,20 @@ api.delete('/api/deleteRow', ({body: {table, id}}, res) => DB.deleter({
 		table,
 		condition: `id = ${id}`
 	})
-	.then(console.log)
-	.catch(console.log)
+	.then(data => res.send(data))
 )
 
 // I think this has to be connected last... It's not calling next SMH my head
 api.use(bundler.middleware())
 
 api.listen(8080, () => console.log('Papa can you hear me...'))
+
+/* did you know you cant go:
+	app.get('/path', (req, res) => asyncDBfunction().then(res.send))
+	https://stackoverflow.com/questions/41801723/express-js-cannot-read-property-req-of-undefined
+	no big deal, but interesting error message
+*/
+
 
 // you can pass options to parcelBundler - in theory
 const bundlerOptions = {

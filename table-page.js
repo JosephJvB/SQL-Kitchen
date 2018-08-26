@@ -1,6 +1,7 @@
 const h = require('react-hyperscript')
 const { connect: connectRedux } = require('react-redux')
 
+const joeFetch = require('./fetch-util')
 const { changeView } = require('./redux').joesActions
 
 module.exports = connectRedux(
@@ -17,7 +18,17 @@ module.exports = connectRedux(
     h('ul', [
       // print table-ish format
       h('li', '|-- ' + metaData.join(' --|-- ') + ' --|'),
-      itemData.map((item, i) => h('li', {key: i},  '|-- ' + item.join(' --|-- ') + ' --|'))
+      itemData.map((item, i) => h('li', {
+        key: i,
+        onClick: () => joeFetch(
+          '/api/deleteRow',
+          {
+            method: 'delete',
+            body: { table: tableName, id: item[0] }, // item: [id, val, val] (id always first)
+          },
+          { success: (res) => console.log('deleted??', res) }
+        )
+      },  '|-- ' + item.join(' --|-- ') + ' --|'))
     ]),
     h('button', {
       onClick: () => changeView({location: 'HOME'})
