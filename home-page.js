@@ -51,8 +51,10 @@ module.exports = connectRedux(
 						'/api/newRow',
 						{
 							method: 'post',
-							body: {table: tableName, items: [{column: 'material', value: 'mountain momma'}]}, headers: {Accept: 'application/json', 'Content-Type': 'application/json'}
-						}, // must include headers[Accept/contentType] on POST
+							body: {
+								table: tableName,
+								items: [{column: 'material', value: 'mountain momma'}]},
+							},
 						{success: console.log}
 					)
 				}, 'TAKE ME HOME')
