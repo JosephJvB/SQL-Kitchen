@@ -7,6 +7,8 @@ const api = express()
 const DB = require('./chefs-tools')
 
 api.use(express.json())
+
+// GET metaData for all tables in DB
 api.get('/api/home', (req, res) => DB.reader({ // get all table names
 		table: "information_schema.tables",
 		columns: ['table_name'],
@@ -24,16 +26,31 @@ api.get('/api/home', (req, res) => DB.reader({ // get all table names
 		data:	tableNames.reduce((acc, table, i) => [].concat(acc, [{ tableName: table.table_name, columnData: tableColumns[i] }]), [])
 	})))
 )
+
+// GET row data for a single table
 api.get('/api/table/:tableName', (req, res) => DB.reader({
 		table: req.params.tableName,
 		columns: ['*']
 	})
 	.then((rowData) => res.send({rowData}))
 )
-// req.body[table/items]
+
+// CREATE a new row in a table
+// question to ask: put vs post? I dont have a good answer right now..yikes, that's a weakness
 api.post('/api/newRow', ({body: {table, items}}, res) => DB.inserter({table, items})
 	.then(res.send)
 )
+
+// DELETE a row in a table
+// do I want a 'soft-delete'? eg: update with 'deleted' flag means read requests will ignore the resource
+api.delete('/api/deleteRow', ({body: {table, id}}, res) => DB.deleter({
+		table,
+		condition: `id = ${id}`
+	})
+	.then(console.log)
+	.catch(console.log)
+)
+
 // I think this has to be connected last... It's not calling next SMH my head
 api.use(bundler.middleware())
 
