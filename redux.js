@@ -1,25 +1,27 @@
 // reducers = functions
 function homeData (state = [], action) {
-  if(action.type === 'BURNTHEMALL') return []
-  return action.type === 'SET_HOME_DATA'
-  ? [].concat(action.data)
-  : state
+  switch(action.type) {
+    case 'SET_HOME_DATA': return action.data
+    case 'BURNTHEMALL': return []
+    default: return state
+  }
 }
 
 function tableData (state = [], action) {
   switch(action.type) {
-    case 'SET_TABLE_DATA': return [].concat(action.rowData)
+    case 'SET_TABLE_DATA': return action.rowData
     case 'REMOVE_TABLE_ITEM': return [].concat(state.filter(i => i.id !== action.id))
     case 'BURNTHEMALL': return []
     default: return state
   }
 }
 
-function view (state = {location: 'HOME'}, action) {
-  if(action.type === 'BURNTHEMALL') return {location: 'HOME'}
-  return action.type === 'CHANGE_VIEW'
-    ? action.viewData
-    : state
+function view (state = {location: 'HOME', params: null}, action) {
+  switch(action.type){
+    case 'CHANGE_VIEW': return action.viewData
+    case 'BURNTHEMALL': return {location: 'HOME', params: null}
+    default: return state
+  }
 }
 
 // actions = consts. why? because I say so
