@@ -7,10 +7,12 @@ function homeData (state = [], action) {
 }
 
 function tableData (state = [], action) {
-  if(action.type === 'BURNTHEMALL') return []
-  return action.type === 'SET_TABLE_DATA'
-  ? [].concat(action.rowData)
-  : state
+  switch(action.type) {
+    case 'SET_TABLE_DATA': return [].concat(action.rowData)
+    case 'REMOVE_TABLE_ITEM': return [].concat(state.filter(i => i.id !== action.id))
+    case 'BURNTHEMALL': return []
+    default: return state
+  }
 }
 
 function view (state = {location: 'HOME'}, action) {
@@ -36,9 +38,7 @@ const removeTableItem = ([{id}]) => ({
   id
 })
 
-const nukeRedux = () => ({
-  type: 'BURNTHEMALL'
-})
+const nukeRedux = () => ({ type: 'BURNTHEMALL' })
 
 const changeView = (viewData) => ({
   type: 'CHANGE_VIEW',

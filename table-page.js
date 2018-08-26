@@ -2,17 +2,24 @@ const h = require('react-hyperscript')
 const { connect: connectRedux } = require('react-redux')
 
 const joeFetch = require('./fetch-util')
-const { changeView } = require('./redux').joesActions
+const {
+  changeView,
+  removeTableItem,
+} = require('./redux').joesActions
 
 module.exports = connectRedux(
   mrGetter, // statik selektah
-  { changeView } // wrap actions in dispatch
+  {
+    changeView,
+    removeTableItem,
+  } // wrap actions in dispatch
 )(({
   // props
   changeView,
   itemData,
   metaData,
   params: tableName,
+  removeTableItem,
 }) => h('div', [
     h('h1', 'TABLE_NAME: ' + tableName),
     h('ul', [
@@ -26,7 +33,7 @@ module.exports = connectRedux(
             method: 'delete',
             body: { table: tableName, id: item[0] }, // item: [id, val, val] (id always first)
           },
-          { success: (res) => console.log('deleted??', res) }
+          { success: removeTableItem }
         )
       },  '|-- ' + item.join(' --|-- ') + ' --|'))
     ]),

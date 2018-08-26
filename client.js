@@ -30,7 +30,8 @@ const persistMiddleware = getPersistMiddleware({
 		BURNTHEMALL: ['homeData', 'tableData', 'view'],
 		SET_HOME_DATA: ['homeData'],
 		SET_TABLE_DATA: ['tableData'],
-		CHANGE_VIEW: ['view']
+		CHANGE_VIEW: ['view'],
+		REMOVE_TABLE_ITEM: ['tableData']
 	}
 })
 
