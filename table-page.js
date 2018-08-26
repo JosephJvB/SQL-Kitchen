@@ -40,13 +40,13 @@ function mrGetter ({tableData, homeData}, {params: tableName}) {
   return { itemData, metaData }
 }
 /*
+end result:
+|---name(type)---|---name(type)---|---name(type)---| - from homeData
+|---val---|---val---|---val---| - tableData[0]
+|---val---|---val---|---val---| - tableData[1]
+...etc
+
   meta data from homeData.columnData (where homeData[i].tableName === params(aka tableName))
-  end result:
-  |---name(type)---|---name(type)---|---name(type)---| - from homeData
-  |---val---|---val---|---val---| - tableData[0]
-  |---val---|---val---|---val---| - tableData[1]
-  ...etc
-  
   columnData comes in looking like [{colName: name, coldatatype: type}, {}, ...]
   create metaData = ['colName(type)', 'colName(type)', ...]
   1-D array of strings
