@@ -5,7 +5,7 @@
   "author": "JosephJvB <joevanbo@pm.me>",
   "license": "MIT",
   "scripts": {
-    "start": "node api.js",
+    "start": "node back-of-house/api.js",
     "test": "echo 'Everything looks fine. Carry on, citizen.'"
   },
   "devDependencies": {

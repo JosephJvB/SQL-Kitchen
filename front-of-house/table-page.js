@@ -29,9 +29,7 @@ module.exports = connectRedux(
         key: i,
         onClick: () => joeFetch(
           `/api/deleteRow/${tableName}/${item[0]}`, // item[0]=id: [id, val, val] (id always first)
-          {
-            method: 'delete'
-          },
+          { method: 'delete' },
           { success: removeTableItem }
         )
       },  '|-- ' + item.join(' --|-- ') + ' --|'))
