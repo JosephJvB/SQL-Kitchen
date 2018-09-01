@@ -43,13 +43,12 @@ module.exports = connectRedux(
     ]),
     // add item input
     h('form', {
-      onSubmit: ({preventDefault, target}) => {
-        preventDefault()
+      onSubmit: (e) => {
+        e.preventDefault()
         const vals = metaData.reduce((acc, colName, i) => acc.concat([{
             colName: colName.split('(')[0],
-            value: target[i].value
+            value: e.target[i].value
           }]), [])
-        console.log('cals', vals)
       }
     }, [
       metaData.map((colName, i) => h('input', {
