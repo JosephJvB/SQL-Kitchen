@@ -43,24 +43,23 @@ module.exports = connectRedux(
     ]),
     // add item input
     h('form', {
-      onSubmit: (e) => e.preventDefault()
+      onSubmit: ({preventDefault, target}) => {
+        preventDefault()
+        const vals = metaData.reduce((acc, colName, i) => acc.concat([{
+            colName: colName.split('(')[0],
+            value: target[i].value
+          }]), [])
+        console.log('cals', vals)
+      }
     }, [
       metaData.map((colName, i) => h('input', {
         key: i,
         required: true,
+        // take dataType from meta data, match it to html input type attribute
         type: inputTypeMap[colName.split('(')[1].split(')')[0]],
         placeholder: colName,
-        onKeyPress: ({key, target: {value}}) => key === 'Enter'
-        ? console.log('---ok now---\n', value)
-        : console.log('not yet')
       })),
-      h('button', {
-        type: 'submit',
-        onClick: ({target: {value}, preventDefault}) => {
-          preventDefault()
-          console.log('---butval---', value)
-        }
-      }, 'big but')
+      h('button', {}, 'big but')
     ]),
     // back button
     h('button', {
