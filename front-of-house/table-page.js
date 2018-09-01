@@ -1,6 +1,11 @@
 const h = require('react-hyperscript')
 const { connect: connectRedux } = require('react-redux')
 
+const inputTypeMap = {
+  integer: 'number',
+  character: 'text'
+}
+
 const joeFetch = require('./fetch-util')
 const {
   changeView,
@@ -21,10 +26,12 @@ module.exports = connectRedux(
   params: tableName,
   removeTableItem,
 }) => h('div', [
+    // title
     h('h1', 'TABLE_NAME: ' + tableName),
     h('ul', [
-      // print table-ish format
+      // column names
       h('li', '|-- ' + metaData.join(' --|-- ') + ' --|'),
+      // items data
       itemData.map((item, i) => h('li', {
         key: i,
         onClick: () => joeFetch(
@@ -34,6 +41,28 @@ module.exports = connectRedux(
         )
       },  '|-- ' + item.join(' --|-- ') + ' --|'))
     ]),
+    // add item input
+    h('form', {
+      onSubmit: (e) => e.preventDefault()
+    }, [
+      metaData.map((colName, i) => h('input', {
+        key: i,
+        required: true,
+        type: inputTypeMap[colName.split('(')[1].split(')')[0]],
+        placeholder: colName,
+        onKeyPress: ({key, target: {value}}) => key === 'Enter'
+        ? console.log('---ok now---\n', value)
+        : console.log('not yet')
+      })),
+      h('button', {
+        type: 'submit',
+        onClick: ({target: {value}, preventDefault}) => {
+          preventDefault()
+          console.log('---butval---', value)
+        }
+      }, 'big but')
+    ]),
+    // back button
     h('button', {
       onClick: () => changeView({location: 'HOME'})
     }, 'BACK THAT UP')
