@@ -31,7 +31,8 @@ const persistMiddleware = getPersistMiddleware({
 		SET_HOME_DATA: ['homeData'],
 		SET_TABLE_DATA: ['tableData'],
 		CHANGE_VIEW: ['view'],
-		REMOVE_TABLE_ITEM: ['tableData']
+		REMOVE_TABLE_ITEM: ['tableData'],
+		ADD_TABLE_ITEM: ['tableData']
 	}
 })
 

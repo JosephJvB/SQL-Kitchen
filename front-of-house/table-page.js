@@ -8,6 +8,7 @@ const inputTypeMap = {
 
 const joeFetch = require('./fetch-util')
 const {
+  addTableItem,
   changeView,
   removeTableItem,
 } = require('./redux').joesActions
@@ -15,11 +16,13 @@ const {
 module.exports = connectRedux(
   mrGetter, // statik selektah
   {
+    addTableItem,
     changeView,
     removeTableItem,
   } // wrap actions in dispatch
 )(({
   // props
+  addTableItem,
   changeView,
   itemData,
   metaData,
@@ -44,7 +47,8 @@ module.exports = connectRedux(
     // add item input
     h('form', {
       onSubmit: (e) => {
-        e.preventDefault()
+        e.persist() // persist to access event after async DB call (react thing)
+        e.preventDefault() // preventDefault so form doesnt push thing to url
         // slice metaData to skip Id (will always be first)
         const formValues = metaData.slice(1).reduce((acc, colName, i) => acc.concat([{
           column: colName.split('(')[0],
@@ -59,7 +63,13 @@ module.exports = connectRedux(
               items: formValues
             }
           },
-          {success: console.log}
+          {
+            success: (result) => {
+              // reset input values on success
+              formValues.forEach((val, i) => e.target[i].value = null)
+              addTableItem(result)
+           }
+          }
         )
       }
     }, [

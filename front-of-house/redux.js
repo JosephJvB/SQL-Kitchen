@@ -11,6 +11,7 @@ function tableData (state = [], action) {
   switch(action.type) {
     case 'SET_TABLE_DATA': return action.rowData
     case 'REMOVE_TABLE_ITEM': return [].concat(state.filter(i => i.id !== action.id))
+    case 'ADD_TABLE_ITEM': return [].concat(state, action.item)
     case 'BURNTHEMALL': return []
     default: return state
   }
@@ -40,6 +41,11 @@ const removeTableItem = ([{id}]) => ({
   id
 })
 
+const addTableItem = (item) => ({
+  type: 'ADD_TABLE_ITEM',
+  item
+})
+
 const nukeRedux = () => ({ type: 'BURNTHEMALL' })
 
 const changeView = (viewData) => ({
@@ -54,6 +60,7 @@ module.exports.joesReducers = {
   view
 }
 module.exports.joesActions = {
+  addTableItem,
   changeView,
   nukeRedux,
   removeTableItem,
