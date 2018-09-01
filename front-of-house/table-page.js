@@ -73,6 +73,7 @@ module.exports = connectRedux(
         )
       }
     }, [
+      h('h3', 'ADD AN ITEM'),
       // slice to remove ID. Dont allow user to input an ID value
       metaData.slice(1).map((colName, i) => h('input', {
         key: i,
@@ -84,6 +85,7 @@ module.exports = connectRedux(
       h('button', {}, 'big but')
     ]),
     // back button
+    h('h3', 'TAKE ME HOME COUNTRY ROADS'),
     h('button', {
       onClick: () => changeView({location: 'HOME'})
     }, 'BACK THAT UP')
