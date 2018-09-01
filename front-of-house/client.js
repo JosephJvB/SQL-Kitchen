@@ -50,3 +50,15 @@ cache.getAll().then((data) => {
 		rootElement
 	)
 })
+// wat
+.catch((err) => {
+	console.error('WEE WOO WEE WOO:\n\n', err)
+// 	const STORE = createStore()
+// 	console.log(STORE)
+// 	render(
+// 		h('button', {
+// 			onClick: () => STORE.dispatch(nukeRedux())
+// 		}, 'BURNTHEMALL'),
+// 		rootElement
+// 	)
+})
