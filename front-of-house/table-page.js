@@ -45,13 +45,26 @@ module.exports = connectRedux(
     h('form', {
       onSubmit: (e) => {
         e.preventDefault()
-        const vals = metaData.reduce((acc, colName, i) => acc.concat([{
-            colName: colName.split('(')[0],
-            value: e.target[i].value
-          }]), [])
+        // slice metaData to skip Id (will always be first)
+        const formValues = metaData.slice(1).reduce((acc, colName, i) => acc.concat([{
+          column: colName.split('(')[0],
+          value: e.target[i].value
+        }]), [])
+        joeFetch(
+          '/api/newRow',
+          {
+            method: 'post', 
+            body: {
+              table: tableName,
+              items: formValues
+            }
+          },
+          {success: console.log}
+        )
       }
     }, [
-      metaData.map((colName, i) => h('input', {
+      // slice to remove ID. Dont allow user to input an ID value
+      metaData.slice(1).map((colName, i) => h('input', {
         key: i,
         required: true,
         // take dataType from meta data, match it to html input type attribute
