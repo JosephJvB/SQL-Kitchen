@@ -25,6 +25,14 @@ function view (state = {location: 'HOME', params: null}, action) {
   }
 }
 
+function terminalText (state = 'bon_appetit!', action) {
+  switch(action.type) {
+    case 'UPDATE_TERMINAL_TEXT': return action.text
+    case 'BURNTHEMALL': return 'bon-appetit!'
+    default: return state
+  }
+}
+
 // actions = consts. why? because I say so
 const setHomeData = ({data}) => ({
   type: 'SET_HOME_DATA',
@@ -53,9 +61,15 @@ const changeView = (viewData) => ({
   viewData // lazy rename of action.payload 
 })
 
+const updateTerminalText = (text) => ({
+  type: 'UPDATE_TERMINAL_TEXT',
+  text
+})
+
 // trying different exports cos that seems like fun
 module.exports.joesReducers = {
   homeData,
+  terminalText,
   tableData,
   view
 }
@@ -66,4 +80,5 @@ module.exports.joesActions = {
   removeTableItem,
   setHomeData,
   setTableData,
+  updateTerminalText,
 }
