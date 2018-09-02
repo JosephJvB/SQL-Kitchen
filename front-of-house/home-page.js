@@ -45,19 +45,7 @@ module.exports = connectRedux(
 					)
 				}
 				}, tableName + ': '),
-				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')')),
-				tableName === 'koru' && h('button', {
-					onClick: () => joeFetch(
-						'/api/newRow',
-						{
-							method: 'post',
-							body: {
-								table: tableName,
-								items: [{column: 'material', value: 'mountain momma'}]},
-							},
-						{success: console.log}
-					)
-				}, 'TAKE ME HOME')
+				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')'))
 			]))
 		])
 	])
