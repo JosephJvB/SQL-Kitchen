@@ -11,6 +11,7 @@ const {
   addTableItem,
   changeView,
   removeTableItem,
+  updateTerminalText,
 } = require('./redux').joesActions
 
 module.exports = connectRedux(
@@ -19,6 +20,7 @@ module.exports = connectRedux(
     addTableItem,
     changeView,
     removeTableItem,
+    updateTerminalText,
   } // wrap actions in dispatch
 )(({
   // props
@@ -28,6 +30,7 @@ module.exports = connectRedux(
   metaData,
   params: tableName,
   removeTableItem,
+  updateTerminalText,
 }) => h('div', [
     // title
     h('h1', 'TABLE_NAME: ' + tableName),
@@ -40,7 +43,14 @@ module.exports = connectRedux(
         onClick: () => joeFetch(
           `/api/deleteRow/${tableName}/${item[0]}`, // item[0]=id: [id, val, val] (id always first)
           { method: 'delete' },
-          { success: removeTableItem }
+          {
+            success: (result) => {
+              // term
+              updateTerminalText(`delete from ${tableName} where id = ${item[0]};`)
+              // state/cache
+              removeTableItem(result)
+            }
+          }
         )
       },  '|-- ' + item.join(' --|-- ') + ' --|'))
     ]),
@@ -65,8 +75,15 @@ module.exports = connectRedux(
           },
           {
             success: (result) => {
+              // update term
+              const columns = formValues.map(item => item.column).join(', '),
+                    values = formValues.map(item => item.value).join(', ')
+              updateTerminalText(
+                `insert into ${tableName} (${columns}) values ('${values}');`
+              )
               // reset input values on success
               formValues.forEach((val, i) => e.target[i].value = null)
+              // add item to state/cache
               addTableItem(result)
            }
           }
