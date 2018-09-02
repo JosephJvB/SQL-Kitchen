@@ -8,14 +8,30 @@ const DB = require('./chefs-tools')
 
 api.use(express.json())
 
+/* more SQL > JS way of getting table column info
+		- doesnt get table_name tho.
+		- i dont know how to select from two tables at once, I assume that's a join.
+
+		currentway: 1 query -> then n queries. One for each table
+		this refactor: 1 query -> then 1 nested query.
+
+		dont know what that means for performance. Keeping this as a note. but no refactor yet
+
+api.get('/', (req, res) => DB.reader({
+	table: "information_schema.columns",
+	columns: ['column_name', 'data_type'],
+	condition: `table_name in (select table_name from information_schema.tables where table_schema = 'public')`	
+}).then((resss) => console.log(resss)))
+*/
+
 // GET metaData for all tables in DB
 api.get('/api/home', (req, res) => DB.reader({ // get all table names
 		table: "information_schema.tables",
 		columns: ['table_name'],
 		condition: `table_schema = 'public'`
 	}) // <--end db request
-	.then((tableNames) => Promise.all( // forEach returned table-item
-		tableNames.map((table) => DB.reader({ // find that tables' column information
+	.then((tableNames) => Promise.all( 
+		tableNames.map((table) => DB.reader({ // get columns for each tableName returned
 			table: "information_schema.columns",
 			columns: ['column_name', 'data_type'],
 			condition: `table_name = '${table.table_name}'`
