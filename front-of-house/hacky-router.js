@@ -20,7 +20,7 @@ const TermScreen = ({terminalText}) => [
     h('div', {style: {height: '13px', width: '13px', border: '0.5px solid #28911d', backgroundColor: '#3AD12A', marginLeft: '0.6rem', marginTop: '3px', borderRadius: '10px'}}),
   ]),
   h('div', {style: {display: 'flex', flexDirection: 'row'}, id: 'TERM_SCREEN'}, [
-    h('div', {style: {backgroundColor: '#082E38', border: '3px solid #718093', padding: '0 2rem 0 0.5rem', display: 'flex', flexDirection: 'row', whiteSpace: 'pre-wrap', width: '100%', borderTop: 'none'}}, [
+    h('div', {style: {backgroundColor: '#082E38', border: '1px solid #718093', padding: '0 2rem 0 0.5rem', display: 'flex', flexDirection: 'row', whiteSpace: 'pre-wrap', width: '100%', borderTop: 'none'}}, [
       h('p', {style: {color: '#f1f2f6', paddingRight: '0.5rem'}}, 'SQL_KITCHEN'),
       h('p', {style: {color: '#fff200', paddingRight: '0.5rem'}}, '$:'),
       h('p', {style: {color: '#3AD12A'}}, terminalText),
