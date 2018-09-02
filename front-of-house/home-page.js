@@ -49,7 +49,7 @@ module.exports = connectRedux(
 		h('div', {id: 'TABLES_META_DATA'}, [
 			homeData.map(({tableName, columnData}) => h('div', {
 				key: tableName,
-				style: { border: '2px dotted #3AD12A', padding: '0.5rem 2rem', backgroundColor: '#363940' },
+				style: { border: '2px solid #718093', padding: '0.5rem 2rem', backgroundColor: '#363940' },
 			}, [
 				h('h1', {
 					style: {

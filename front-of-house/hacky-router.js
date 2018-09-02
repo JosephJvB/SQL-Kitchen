@@ -10,9 +10,9 @@ const Table = require('./table-page')
 
 // needs to move out of the house at some point..
 const TermScreen = ({terminalText}) => h('div', {style: {display: 'flex', flexDirection: 'row'}, id: 'TERM_SCREEN'}, [
-  h('div', {style: {backgroundColor: '#082E38', border: '3px solid #718093', padding: '0 2rem 0 0.5rem', display: 'flex', flexDirection: 'row', minWidth: '70%', whiteSpace: 'pre-wrap'}}, [
-    h('p', {style: {color: '#f1f2f6', marginRight: '0.5rem'}}, 'SQL_KITCHEN'),
-    h('p', {style: {color: '#fff200', marginRight: '0.5rem'}}, '$:'),
+  h('div', {style: {backgroundColor: '#082E38', border: '3px solid #718093', padding: '0 2rem 0 0.5rem', display: 'flex', flexDirection: 'row', whiteSpace: 'pre-wrap', width: '100%'}}, [
+    h('p', {style: {color: '#f1f2f6', paddingRight: '0.5rem'}}, 'SQL_KITCHEN'),
+    h('p', {style: {color: '#fff200', paddingRight: '0.5rem'}}, '$:'),
     h('p', {style: {color: '#3AD12A'}}, terminalText),
   ])
 ])
