@@ -24,8 +24,11 @@ module.exports = connectRedux(
 }) => h('div', {style: {width: '80%', margin: 'auto'}}, [
 		// HEADER
 		h('div', {style: {display: 'flex', flexDirection: 'row'}, id: 'HEADER'}, [
-			h('h3', {style: {marginRight: '2rem'}}, 'Welcome madame(s) or monsieur(s) a le SQL-Kitchen:'),
-			h('p', {style: {backgroundColor: '#2f3640', color: '#4cd137', border: '3px solid #718093', padding: '0.5rem 2rem'}}, '$:this will be the query bar'),
+			h('div', {style: {backgroundColor: '#2f3640', border: '3px solid #718093', padding: '0 2rem 0 0.5rem', display: 'flex', flexDirection: 'row', minWidth: '70%'}}, [
+				h('p', {style: {color: '#f1f2f6'}}, '@ SQL_KITCHEN'),
+				h('p', {style: {color: '#fff200', marginRight: '0.5rem'}}, '$:'),
+				h('p', {style: {color: '#4cd137'}}, 'this will be the query bar'),
+			])
 		]),
 		h('div', {style: {display: 'flex', flexDirection: 'row'}, id: 'GET_TABLES'}, [
 			h('h1', {
@@ -42,7 +45,7 @@ module.exports = connectRedux(
 		h('div', {id: 'TABLES_META_DATA'}, [
 			homeData.map(({tableName, columnData}) => h('div', {
 				key: tableName,
-				style: { border: '2px dotted red', padding: '0.5rem 2rem' },
+				style: { border: '2px dotted #4cd137', padding: '0.5rem 2rem' },
 			}, [
 				h('h1', {
 					style: {
