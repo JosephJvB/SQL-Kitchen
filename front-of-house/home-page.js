@@ -31,13 +31,13 @@ module.exports = connectRedux(
 }) => h('div', {style: {width: '80%', margin: 'auto'}}, [
 		// HEADER
 		h('div', {style: {display: 'flex', flexDirection: 'row'}, id: 'HEADER'}, [
-			h('div', {style: {backgroundColor: '#082E38', border: '3px solid #718093', padding: '0 2rem 0 0.5rem', display: 'flex', flexDirection: 'row', minWidth: '70%'}}, [
+			h('div', {style: {backgroundColor: '#082E38', border: '3px solid #718093', padding: '0 2rem 0 0.5rem', display: 'flex', flexDirection: 'row', minWidth: '70%', whiteSpace: 'pre-wrap'}}, [
 				h('p', {style: {color: '#f1f2f6'}}, '@ SQL_KITCHEN'),
 				h('p', {style: {color: '#fff200', marginRight: '0.5rem'}}, '$:'),
 				h('p', {style: {color: '#3AD12A'}}, terminalText),
 			])
 		]),
-		h('div', {style: {display: 'flex', flexDirection: 'row'}, id: 'GET_TABLES'}, [
+		h('div', {style: {display: 'flex', flexDirection: 'row'}, id: 'TABLES'}, [
 			h('h1', {
 				style: {marginRight: '2rem', cursor: 'pointer',},
 				onClick: () => joeFetch(
@@ -50,7 +50,7 @@ module.exports = connectRedux(
 						}
 					}
 					)
-			}, 'GET_TABLES:'),
+			}, homeData.length > 0 ? 'TABLE_LIST:' : 'GET_TABLES:'),
 			// h('button', {style: {padding: '0 2rem'}},  'ADD NEW')
 		]),
 		// TABLE_DATA ELEMENTS
@@ -75,12 +75,13 @@ module.exports = connectRedux(
 				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')'))
 			]))
 		]),
+		// DUKE NUKEM
 		h('div', {style: {display: 'flex', flexDirection: 'row'}}, [
 			h('div', {
 				style: {padding: '1rem 2rem', backgroundColor: '#e74c3c', maxWidth: '11ch', marginRight: '2rem'},
 				onClick: () => nukeRedux()
 			}, 'BURNTHEMALL'),
-			h('p', '- nuke d cache')
+			h('p', '- duke nuke \'em')
 		])
 	])
 )
