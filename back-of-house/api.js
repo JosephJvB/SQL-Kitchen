@@ -1,8 +1,8 @@
-const parcelBundler = require('parcel-bundler')
-const bundler = new parcelBundler('back-of-house/index.html', {/* can pass options here */})
+const parcelBundler = require('parcel-bundler'),
+			bundler = new parcelBundler('back-of-house/index.html', {/* can pass options here */})
 
-const express = require('express')
-const api = express()
+const express = require('express'),
+			api = express()
 
 const DB = require('./chefs-tools')
 
