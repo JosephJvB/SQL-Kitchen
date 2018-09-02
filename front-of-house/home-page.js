@@ -28,15 +28,7 @@ module.exports = connectRedux(
 	setTableData,
 	terminalText,
 	updateTerminalText,
-}) => h('div', {style: {width: '80%', margin: 'auto'}}, [
-		// HEADER
-		h('div', {style: {display: 'flex', flexDirection: 'row'}, id: 'HEADER'}, [
-			h('div', {style: {backgroundColor: '#082E38', border: '3px solid #718093', padding: '0 2rem 0 0.5rem', display: 'flex', flexDirection: 'row', minWidth: '70%', whiteSpace: 'pre-wrap'}}, [
-				h('p', {style: {color: '#f1f2f6'}}, '@ SQL_KITCHEN'),
-				h('p', {style: {color: '#fff200', marginRight: '0.5rem'}}, '$:'),
-				h('p', {style: {color: '#3AD12A'}}, terminalText),
-			])
-		]),
+}) => h('div', [
 		h('div', {style: {display: 'flex', flexDirection: 'row'}, id: 'TABLES'}, [
 			h('h1', {
 				style: {marginRight: '2rem', cursor: 'pointer',},
@@ -45,7 +37,7 @@ module.exports = connectRedux(
 					{method: 'get'},
 					{
 						success: (result) => {
-							updateTerminalText('select table_name from information_schema.tables where table_schema = \'public\'\n\n--for each table_name--\n\nselect column_name, data_type from information_schema.columns where table_name = $1')
+							updateTerminalText('select table_name from information_schema.tables where table_schema = \'public\';\n\n--for each table_name--\n\nselect column_name, data_type from information_schema.columns where table_name = $1;')
 							setHomeData(result)
 						}
 					}
@@ -57,7 +49,7 @@ module.exports = connectRedux(
 		h('div', {id: 'TABLES_META_DATA'}, [
 			homeData.map(({tableName, columnData}) => h('div', {
 				key: tableName,
-				style: { border: '2px dotted #3AD12A', padding: '0.5rem 2rem' },
+				style: { border: '2px dotted #3AD12A', padding: '0.5rem 2rem', backgroundColor: '#363940' },
 			}, [
 				h('h1', {
 					style: {
@@ -68,7 +60,12 @@ module.exports = connectRedux(
 					return joeFetch(
 						`/api/table/${tableName}`,
 						{method: 'get'},
-						{success: setTableData}
+						{
+							success: (result) => {
+								updateTerminalText(`select * from ${tableName};`)
+								setTableData(result)
+							}
+						}
 					)
 				}
 				}, tableName + ': '),
