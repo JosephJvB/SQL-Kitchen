@@ -4,6 +4,7 @@ const { connect: connectRedux } = require('react-redux')
 const joeFetch = require('./fetch-util')
 const {
 	changeView,
+	nukeRedux,
 	setHomeData,
 	setTableData,
 	updateTerminalText,
@@ -13,6 +14,7 @@ module.exports = connectRedux(
 	({homeData, terminalText}) => ({homeData, terminalText}), // map state to props
 	{ // pass actions as second argument to bind dispatch to actions
 		changeView,
+		nukeRedux,
 		setHomeData,
 		setTableData,
 		updateTerminalText,
@@ -22,6 +24,7 @@ module.exports = connectRedux(
 	changeView,
 	homeData,
 	setHomeData,
+	nukeRedux,
 	setTableData,
 	terminalText,
 	updateTerminalText,
@@ -71,6 +74,13 @@ module.exports = connectRedux(
 				}, tableName + ': '),
 				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')'))
 			]))
+		]),
+		h('div', {style: {display: 'flex', flexDirection: 'row'}}, [
+			h('div', {
+				style: {padding: '1rem 2rem', backgroundColor: '#e74c3c', maxWidth: '11ch', marginRight: '2rem'},
+				onClick: () => nukeRedux()
+			}, 'BURNTHEMALL'),
+			h('p', '- nuke d cache')
 		])
 	])
 )
