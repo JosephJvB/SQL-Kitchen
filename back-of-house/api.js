@@ -50,7 +50,7 @@ api.get('/api/table/:tableName', (req, res) => DB.reader({
 		table: req.params.tableName,
 		columns: ['*']
 	})
-	.then(({RES, SQL}) = res.send({RES, SQL}))
+	.then(({RES, SQL}) => res.send({RES, SQL}))
 )
 
 // CREATE a new row in a table
