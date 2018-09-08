@@ -36,9 +36,9 @@ module.exports = connectRedux(
 					'/api/home',
 					{method: 'get'},
 					{
-						success: (result) => {
-							updateTerminalText('select table_name from information_schema.tables where table_schema = \'public\';\n\n--for each table_name--\n\nselect column_name, data_type from information_schema.columns where table_name = $1;')
-							setHomeData(result)
+						success: ({RES, SQL}) => {
+							updateTerminalText(SQL)
+							setHomeData({data: RES})
 						}
 					}
 					)
@@ -61,9 +61,9 @@ module.exports = connectRedux(
 						`/api/table/${tableName}`,
 						{method: 'get'},
 						{
-							success: (result) => {
-								updateTerminalText(`select * from ${tableName};`)
-								setTableData(result)
+							success: ({RES, SQL}) => {
+								updateTerminalText(SQL)
+								setTableData({data: RES})
 							}
 						}
 					)
