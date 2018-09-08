@@ -36,9 +36,9 @@ module.exports = connectRedux(
 					'/api/home',
 					{method: 'get'},
 					{
-						success: ({res, SQL}) => {
+						success: ({RES, SQL}) => {
 							updateTerminalText(SQL)
-							setHomeData({data: res})
+							setHomeData({data: RES})
 						}
 					}
 					)
@@ -61,9 +61,9 @@ module.exports = connectRedux(
 						`/api/table/${tableName}`,
 						{method: 'get'},
 						{
-							success: ({res, SQL}) => {
+							success: ({RES, SQL}) => {
 								updateTerminalText(SQL)
-								setTableData(res)
+								setTableData({data: RES})
 							}
 						}
 					)

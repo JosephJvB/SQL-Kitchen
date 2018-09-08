@@ -43,14 +43,14 @@ function inserter({table, items}) {
 	const sqlValues = items.reduce((str, item, i) => `${str}'${item.value}'${i + 1 < items.length ? ',' : ''}`, '')
 	const SQL = `insert into ${table} (${sqlColumns}) values (${sqlValues}) returning *`
 	return DB.many(SQL)
-		.then(res => ({res, SQL}))
+		.then(RES => ({RES, SQL}))
 		.catch(err => helper({DB, type: 'INSERT_ERROR', result: err}))
 }
 
 function deleter({table, condition}) {
 	const SQL = `delete from ${table} where ${condition} returning *`
 	return DB.many(SQL)
-		.then(res => ({res, SQL}))
+		.then(RES => ({RES, SQL}))
 		.catch(err => helper({DB, type: 'DELETE_ERROR', result: err}))
 }
 
@@ -67,7 +67,7 @@ function reader({table, columns, condition}) {
 	const sqlColumns = columns.reduce((str, column, i) => `${str}${column}${i + 1 < columns.length ? ',' : ''}`, '')
 	const SQL = `select ${sqlColumns} from ${table}${condition ? ' where ' + condition : ''}`
 	return DB.any(SQL)
-		.then(res => ({res, SQL}))
+		.then(RES => ({RES, SQL}))
 		.catch(err => helper({DB, type: 'SELECT_ERROR', result: err}))
 }
 

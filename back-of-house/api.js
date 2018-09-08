@@ -30,7 +30,7 @@ api.get('/api/home', (req, res) => DB.reader({ // get all table names
 		columns: ['table_name'],
 		condition: `table_schema = 'public'`
 	}) // <--end db request
-	.then(({res: tableNames, SQL: SQL_ONE}) => Promise.all(
+	.then(({RES: tableNames, SQL: SQL_ONE}) => Promise.all(
 		tableNames.map((table) => DB.reader({ // get columns for each tableName returned
 			table: "information_schema.columns",
 			columns: ['column_name', 'data_type'],
@@ -40,8 +40,8 @@ api.get('/api/home', (req, res) => DB.reader({ // get all table names
 	//{res: tableColumns, SQL}
 	.then((allTablesData) => res.send({
 		// send {data: [{tableName: columnData}, {}, ...]}
-		res:	tableNames.reduce((acc, table, i) => [].concat(acc, [{ tableName: table.table_name, columnData: allTablesData[i].res }]), []),
-		SQL: `${SQL_ONE}\n${allTablesData[allTablesData.length - 1].SQL}` // just grab the last SQL string 🤷‍♀️
+		RES:	tableNames.reduce((acc, table, i) => [].concat(acc, [{ tableName: table.table_name, columnData: allTablesData[i].RES }]), []),
+		SQL: `${SQL_ONE}\n-----\n${allTablesData[allTablesData.length - 1].SQL}` // just grab the last SQL string 🤷‍♀️
 	})))
 )
 
@@ -50,13 +50,13 @@ api.get('/api/table/:tableName', (req, res) => DB.reader({
 		table: req.params.tableName,
 		columns: ['*']
 	})
-	.then(({res, SQL}) => res.send({res, SQL}))
+	.then(({RES, SQL}) = res.send({RES, SQL}))
 )
 
 // CREATE a new row in a table
 // question to ask: put vs post? I dont have a good answer right now..yikes, that's a weakness
 api.post('/api/newRow', ({body: {table, items}}, res) => DB.inserter({table, items})
-	.then(({res, SQL}) => res.send({res, SQL}))
+	.then(({RES, SQL}) => res.send({RES, SQL}))
 )
 
 // DELETE a row in a table
@@ -65,7 +65,7 @@ api.delete('/api/deleteRow/:table/:id', ({params:  {table, id}}, res) => DB.dele
 		table,
 		condition: `id = ${id}`
 	})
-	.then(({res, SQL}) => res.send({res, SQL}))
+	.then(({RES, SQL}) => res.send({RES, SQL}))
 )
 
 // I think this has to be connected last... It's not calling next SMH my head

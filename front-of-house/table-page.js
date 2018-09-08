@@ -44,11 +44,11 @@ module.exports = connectRedux(
           `/api/deleteRow/${tableName}/${item[0]}`, // item[0]=id: [id, val, val] (id always first)
           { method: 'delete' },
           {
-            success: (result) => {
+            success: ({RES, SQL}) => {
               // term
-              updateTerminalText(`delete from ${tableName} where id = ${item[0]};`)
+              updateTerminalText(SQL)
               // state/cache
-              removeTableItem(result)
+              removeTableItem(RES)
             }
           }
         )
@@ -74,17 +74,12 @@ module.exports = connectRedux(
             }
           },
           {
-            success: (result) => {
-              // update term
-              const columns = formValues.map(item => item.column).join(', '),
-                    values = formValues.map(item => item.value).join(', ')
-              updateTerminalText(
-                `insert into ${tableName} (${columns}) values ('${values}');`
-              )
+            success: ({RES, SQL}) => {
+              updateTerminalText(SQL)
               // reset input values on success
               formValues.forEach((val, i) => e.target[i].value = null)
               // add item to state/cache
-              addTableItem(result)
+              addTableItem(RES)
            }
           }
         )

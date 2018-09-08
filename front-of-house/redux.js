@@ -9,7 +9,7 @@ function homeData (state = [], action) {
 
 function tableData (state = [], action) {
   switch(action.type) {
-    case 'SET_TABLE_DATA': return action.rowData
+    case 'SET_TABLE_DATA': return action.data
     case 'REMOVE_TABLE_ITEM': return [].concat(state.filter(i => i.id !== action.id))
     case 'ADD_TABLE_ITEM': return [].concat(state, action.item)
     case 'BURNTHEMALL': return []
@@ -39,9 +39,9 @@ const setHomeData = ({data}) => ({
   data
 })
 
-const setTableData = ({rowData}) => ({
+const setTableData = ({data}) => ({
   type: 'SET_TABLE_DATA',
-  rowData
+  data
 })
 
 const removeTableItem = ([{id}]) => ({
