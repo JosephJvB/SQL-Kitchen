@@ -41,14 +41,16 @@ function inserter({table, items}) {
 	//items = [{column, value}, {column, value}, ...]
 	const sqlColumns = items.reduce((str, item, i) => `${str}${item.column}${i + 1 < items.length ? ',' : ''}`, '')
 	const sqlValues = items.reduce((str, item, i) => `${str}'${item.value}'${i + 1 < items.length ? ',' : ''}`, '')
-	return DB.many(`insert into ${table} (${sqlColumns}) values (${sqlValues}) returning *`)
-		.then(res => res)
+	const SQL = `insert into ${table} (${sqlColumns}) values (${sqlValues}) returning *`
+	return DB.many(SQL)
+		.then(res => ({res, SQL}))
 		.catch(err => helper({DB, type: 'INSERT_ERROR', result: err}))
 }
 
 function deleter({table, condition}) {
-	return DB.many(`delete from ${table} where ${condition} returning *`)
-		.then(res => res)
+	const SQL = `delete from ${table} where ${condition} returning *`
+	return DB.many(SQL)
+		.then(res => ({res, SQL}))
 		.catch(err => helper({DB, type: 'DELETE_ERROR', result: err}))
 }
 
@@ -63,8 +65,9 @@ function updater({table, items, condition}) {
 function reader({table, columns, condition}) {
 	// columns = ['column_name', 'column_name', ...]
 	const sqlColumns = columns.reduce((str, column, i) => `${str}${column}${i + 1 < columns.length ? ',' : ''}`, '')
-	return DB.any(`select ${sqlColumns} from ${table}${condition ? ' where ' + condition : ''}`)
-		.then(res => res)
+	const SQL = `select ${sqlColumns} from ${table}${condition ? ' where ' + condition : ''}`
+	return DB.any(SQL)
+		.then(res => ({res, SQL}))
 		.catch(err => helper({DB, type: 'SELECT_ERROR', result: err}))
 }
 
