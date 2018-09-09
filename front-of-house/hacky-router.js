@@ -23,7 +23,8 @@ const TermScreen = ({terminalText}) => [
       h('p', {style: {color: '#f1f2f6', paddingRight: '0.5rem'}}, 'SQL_KITCHEN'),
       h('p', {style: {color: '#fff200', paddingRight: '0.5rem'}}, '$:'),
       h('p', {style: {color: '#3AD12A'}}, terminalText),
-      h('p', {id: 'BLINKER', style: {color: '#3AD12A'}}, '_'),
+      // note that cursor is not in the right place when termText is multi-line.
+      h('p', {id: 'BLINKING_CURSOR', style: {color: '#fff200'}}, '_'),
     ])
   ])
 ]

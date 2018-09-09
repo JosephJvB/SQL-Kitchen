@@ -34,7 +34,7 @@ module.exports = connectRedux(
 }) => h('div', {style: {padding: '1rem'}}, [
     // title
     h('h1', 'TABLE_NAME: ' + tableName),
-    h('div', {display: 'flex', flexDirection: 'column'}, [
+    h('div', {style: {border: '1px dashed #3AD12A'}}, [
       // column names
       h('p', '|-- ' + metaData.join(' --|-- ') + ' --|'),
       // items data
