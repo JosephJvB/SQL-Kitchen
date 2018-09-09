@@ -31,14 +31,14 @@ module.exports = connectRedux(
   params: tableName,
   removeTableItem,
   updateTerminalText,
-}) => h('div', [
+}) => h('div', {style: {padding: '1rem'}}, [
     // title
     h('h1', 'TABLE_NAME: ' + tableName),
-    h('ul', [
+    h('div', {display: 'flex', flexDirection: 'column'}, [
       // column names
-      h('li', '|-- ' + metaData.join(' --|-- ') + ' --|'),
+      h('p', '|-- ' + metaData.join(' --|-- ') + ' --|'),
       // items data
-      itemData.map((item, i) => h('li', {
+      itemData.map((item, i) => h('p', {
         key: i,
         onClick: () => joeFetch(
           `/api/deleteRow/${tableName}/${item[0]}`, // item[0]=id: [id, val, val] (id always first)

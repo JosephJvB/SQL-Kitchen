@@ -28,7 +28,7 @@ module.exports = connectRedux(
 	setTableData,
 	terminalText,
 	updateTerminalText,
-}) => h('div', [
+}) => h('div', {style: {padding: '1rem'}}, [
 		h('div', {style: {display: 'flex', flexDirection: 'row'}, id: 'TABLES'}, [
 			h('h1', {
 				style: {marginRight: '2rem', cursor: 'pointer',},
@@ -49,7 +49,7 @@ module.exports = connectRedux(
 		h('div', {id: 'TABLES_META_DATA'}, [
 			homeData.map(({tableName, columnData}) => h('div', {
 				key: tableName,
-				style: { border: '1px solid #718093', padding: '0.5rem 2rem', backgroundColor: '#363940' },
+				style: {border: '1px dashed #3AD12A', padding: '1rem'},
 			}, [
 				h('h1', {
 					style: {
@@ -75,9 +75,9 @@ module.exports = connectRedux(
 		// DUKE NUKEM
 		h('div', {style: {display: 'flex', flexDirection: 'row'}}, [
 			h('div', {
-				style: {padding: '1rem 2rem', backgroundColor: '#e74c3c', maxWidth: '11ch', marginRight: '2rem'},
+				style: {padding: '1rem 2rem', backgroundColor: '#e74c3c', maxWidth: '11ch', marginRight: '2rem', color: '#ffffff'},
 				onClick: () => nukeRedux()
-			}, 'BURNTHEMALL'),
+			}, 'QUIT: \\q'),
 			h('p', '- duke nuke \'em')
 		])
 	])
