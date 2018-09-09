@@ -23,6 +23,7 @@ const TermScreen = ({terminalText}) => [
       h('p', {style: {color: '#f1f2f6', paddingRight: '0.5rem'}}, 'SQL_KITCHEN'),
       h('p', {style: {color: '#fff200', paddingRight: '0.5rem'}}, '$:'),
       h('p', {style: {color: '#3AD12A'}}, terminalText),
+      h('p', {id: 'BLINKER', style: {color: '#3AD12A'}}, '_'),
     ])
   ])
 ]

@@ -5,16 +5,26 @@
 			<meta name="author" content="Chef van Bohemen">
 			<link rel="icon" type="image/png" href="https://emojipedia-us.s3.amazonaws.com/thumbs/160/apple/81/male-cook_1f468-200d-1f373.png">
 			<style>
-				/* selection is an 'event' that refers to when something is highlighted
-					- on selection: set backgroundColour to yellow 🌝 */
 				body{
 					background-color: #2f3136;
 					color: #ffffff;
 					/* color: #3AD12A; */
 					font-family: "Droid Sans Mono";
+				/* selection is an 'event' that refers to when something is highlighted
+					- on selection: set backgroundColour to yellow 🌝 */
 				}
 				*::selection {
 					background-color: #fffa65;
+				}
+				/* https://stackoverflow.com/questions/16344354/how-to-make-blinking-flashing-text-with-css-3 */
+				#BLINKER {
+					animation: blinker 1s linear infinite;
+				}
+
+				@keyframes blinker {
+					50% {
+						opacity: 0;
+					}
 				}
 			</style>
 	</head>
