@@ -25,12 +25,10 @@ function make() {
     ]
   })
   .then(() => console.log('hi'))
-  .catch(console.error)
 }
 
 // dropTable
 function destroy() {
   return DB.tableBreaker('gizz2017')
   .then(() => console.log('hi'))
-  .catch(console.error)
 }
