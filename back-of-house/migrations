@@ -19,8 +19,8 @@ function make() {
   return DB.tableMaker({
     table: 'gizz2017',
     columns: [
-      {name: 'name', type: 'char(255)'},
-      {name: 'tracks', type: 'json'},
+      {name: 'album_name', type: 'char(255)'},
+      {name: 'fav track', type: 'char(255)'},
       {name: 'eee_yup', type: 'bool'},
     ]
   })
