@@ -8,12 +8,15 @@
     "start": "node back-of-house/api.js",
     "test": "echo 'Everything looks fine. Carry on, citizen.'"
   },
+  "engines": {
+    "node": "8.9.1"
+  },
   "devDependencies": {
-    "parcel-bundler": "^1.9.7"
   },
   "dependencies": {
     "express": "^4.16.3",
     "money-clip": "^2.1.0",
+    "parcel-bundler": "^1.9.7",
     "pg-promise": "^8.4.5",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
