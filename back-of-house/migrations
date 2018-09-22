@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+const DB = require('./chefs-tools')
+// ON HOLD: migrations are for people who care about their database shapes
+//          I want my users to create whatever tables they want ideally..
+//          but then maybe I should write these scripts to TEST that a deployed thing to heroku would work..
+
+const args = process.argv.slice(2)
+
+if(!args[0]) return console.log('But what u wanna DO tho?')
+
+switch(args[0].toLowerCase()) {
+  case 'up': return make()
+  case 'down': return destroy()
+}
+
+// createTable
+function make() {
+  return DB.tableMaker({
+    table: 'gizz2017',
+    columns: [
+      {name: 'name', type: 'char(255)'},
+      {name: 'tracks', type: 'json'},
+      {name: 'eee_yup', type: 'bool'},
+    ]
+  })
+  .then(() => console.log('hi'))
+  .catch(console.error)
+}
+
+// dropTable
+function destroy() {
+  return DB.tableBreaker('gizz2017')
+  .then(() => console.log('hi'))
+  .catch(console.error)
+}

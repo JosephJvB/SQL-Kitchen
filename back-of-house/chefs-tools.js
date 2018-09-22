@@ -1,12 +1,17 @@
 const pgp = require('pg-promise')()
 
-const DB = pgp({
-	host: 'localhost',
-	port: 5432,
-	database: 'the_kitchen', // how do I get it so user can make more databases then connect to them? stretch
-	user: 'postgres',
-	password: 'postgres'
-})
+// need to make this config accept different things for local vs heroku...
+const PG_CONFIG = process.env.PORT // assume this is a way I can tell that it's heroku time
+	? process.env.DATABASE_URL
+	: {
+		host: 'localhost',
+		port: 5432,
+		database: 'the_kitchen', // how do I get it so user can make more databases then connect to them? stretch
+		user: 'postgres',
+		password: 'postgres'
+	}
+
+const DB = pgp(PG_CONFIG)
 
 /*
 	So I'm not using the default postgres way of inserting variables into the query string:
