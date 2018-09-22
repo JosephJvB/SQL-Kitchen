@@ -1,8 +1,7 @@
 const parcelBundler = require('parcel-bundler'),
-			bundler = new parcelBundler('back-of-house/index.html', {/* can pass options here */})
-
-const express = require('express'),
-			api = express()
+			bundler = new parcelBundler('back-of-house/index.html', {/* can pass options here */}),
+			express = require('express'),
+			api = express(),
 
 const DB = require('./chefs-tools')
 
@@ -71,7 +70,7 @@ api.delete('/api/deleteRow/:table/:id', ({params:  {table, id}}, res) => DB.dele
 // I think this has to be connected last... It's not calling next SMH my head
 api.use(bundler.middleware())
 
-api.listen(8080, () => console.log('Papa can you hear me...'))
+api.listen(process.env.PORT || 8080, () => console.log('Papa can you hear me...'))
 
 /* did you know you cant go:
 	app.get('/path', (req, res) => asyncDBfunction().then(res.send))
