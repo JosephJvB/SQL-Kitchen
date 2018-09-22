@@ -33,6 +33,13 @@ function terminalText (state = 'bon_appetit!', action) {
   }
 }
 
+function isFullScreen (state = false, action) {
+  switch(action.type) {
+    case 'SET_FULLSCREEN': return !state
+    default: return state
+  }
+}
+
 // actions = consts. why? because I say so
 const setHomeData = ({data}) => ({
   type: 'SET_HOME_DATA',
@@ -66,9 +73,12 @@ const updateTerminalText = (text) => ({
   text
 })
 
+const setFullScreen = () => ({ type: 'SET_FULLSCREEN' })
+
 // trying different exports cos that seems like fun
 module.exports.joesReducers = {
   homeData,
+  isFullScreen,
   terminalText,
   tableData,
   view
@@ -78,6 +88,7 @@ module.exports.joesActions = {
   changeView,
   nukeRedux,
   removeTableItem,
+  setFullScreen,
   setHomeData,
   setTableData,
   updateTerminalText,
