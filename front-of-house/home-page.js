@@ -72,13 +72,5 @@ module.exports = connectRedux(
 				columnData.map((col, i) => h('p', {key: i},  col.column_name + '(' + col.data_type + ')'))
 			]))
 		]),
-		// DUKE NUKEM
-		h('div', {style: {display: 'flex', flexDirection: 'row'}}, [
-			h('div', {
-				style: {padding: '1rem 2rem', backgroundColor: '#e74c3c', maxWidth: '11ch', marginRight: '2rem', color: '#ffffff'},
-				onClick: () => nukeRedux()
-			}, 'QUIT: \\q'),
-			h('p', '- duke nuke \'em')
-		])
 	])
 )
