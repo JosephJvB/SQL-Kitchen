@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+const DB = require('./chefs-tools') 
 
-const DB = require('./chefs-tools')
-// ON HOLD: migrations are for people who care about their database shapes
-//          I want my users to create whatever tables they want ideally..
-//          but then maybe I should write these scripts to TEST that a deployed thing to heroku would work..
+/* Joes custom migration script :)
+	create: ./back-of-house/migrations up
+	drop: ./back-of-house/migrations down
+	on heroku: heroku run ./back-of-house/migrations (up/down)
+*/
 
 const args = process.argv.slice(2)
 
@@ -12,6 +14,7 @@ if(!args[0]) return console.log('But what u wanna DO tho?')
 switch(args[0].toLowerCase()) {
   case 'up': return make()
   case 'down': return destroy()
+  default: return console.log('nah')
 }
 
 // createTable
