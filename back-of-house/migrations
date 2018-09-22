@@ -20,7 +20,7 @@ function make() {
     table: 'gizz2017',
     columns: [
       {name: 'album_name', type: 'char(255)'},
-      {name: 'fav track', type: 'char(255)'},
+      {name: 'fav_track', type: 'char(255)'},
       {name: 'eee_yup', type: 'bool'},
     ]
   })
