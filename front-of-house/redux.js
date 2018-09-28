@@ -28,6 +28,7 @@ function view (state = {location: 'HOME', params: null}, action) {
 function terminalText (state = 'bon_appetit!', action) {
   switch(action.type) {
     case 'UPDATE_TERMINAL_TEXT': return action.text
+    case 'TEMP_UPDATE_TERMINAL_TEXT': return action.text
     case 'BURNTHEMALL': return 'bon-appetit!'
     default: return state
   }
@@ -73,6 +74,11 @@ const updateTerminalText = (text) => ({
   text
 })
 
+const tempUpdateTerminalText = (text) => ({
+  type: 'TEMP_UPDATE_TERMINAL_TEXT',
+  text
+})
+
 const setFullScreen = () => ({ type: 'SET_FULLSCREEN' })
 
 // trying different exports cos that seems like fun
@@ -91,5 +97,6 @@ module.exports.joesActions = {
   setFullScreen,
   setHomeData,
   setTableData,
+  tempUpdateTerminalText,
   updateTerminalText,
 }

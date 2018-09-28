@@ -2,6 +2,13 @@ const h = require('react-hyperscript')
 const { connect: connectRedux } = require('react-redux')
 
 const {
+  tempUpdateTerminalText,
+  updateTerminalText  
+} = require('./redux').joesActions
+
+const alphabetAndNumbers = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '=', '\'']
+
+const {
   nukeRedux,
   setFullScreen,
 } = require('./redux').joesActions
@@ -29,10 +36,28 @@ const TermActions = connectRedux(
 const TermText = connectRedux(
   // selector
   ({ terminalText }) => ({ terminalText }),
-  {} // actions
+  {
+    tempUpdateTerminalText,
+    updateTerminalText
+  } // actions
   )(({ // props
-    terminalText
+    terminalText,
+    tempUpdateTerminalText,
+    updateTerminalText
   }) => h('div', {
+        // tabIndex 0 means that a div element can have 'focus' and listen to keyboard events
+        tabIndex: 0,
+        onKeyDown: (e) => {
+          e.preventDefault()
+          // TODO: factor this conditional into a helper function
+          if(alphabetAndNumbers.includes(e.key)) { 
+            tempUpdateTerminalText(terminalText + e.key)
+          } else if(e.key === 'Backspace') {
+            tempUpdateTerminalText(terminalText.substring(0, terminalText.length - 1))
+          } else if(e.key === 'Enter') {
+            updateTerminalText(terminalText)
+          }
+        },
         key: 'KHALED',
         style: {minHeight: 'fit-content', display: 'flex', flexDirection: 'row'},
         id: 'TERM_SCREEN'
