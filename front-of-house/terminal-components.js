@@ -3,7 +3,8 @@ const { connect: connectRedux } = require('react-redux')
 
 const {
   tempUpdateTerminalText,
-  updateTerminalText  
+  updateCursorIndex,
+  updateTerminalText
 } = require('./redux').joesActions
 
 const alphabetAndNumbers = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '=', '\'']
@@ -35,21 +36,41 @@ const TermActions = connectRedux(
     
 const TermText = connectRedux(
   // selector
-  ({ terminalText }) => ({ terminalText }),
+  ({
+    terminalCursorIndex,
+    terminalText,
+  }) => ({
+    terminalCursorIndex,
+    terminalText,
+  }),
   {
     tempUpdateTerminalText,
-    updateTerminalText
+    updateCursorIndex,
+    updateTerminalText,
   } // actions
   )(({ // props
     terminalText,
+    terminalCursorIndex,
     tempUpdateTerminalText,
+    updateCursorIndex,
     updateTerminalText
   }) => h('div', {
         // tabIndex 0 means that a div element can have 'focus' and listen to keyboard events
         tabIndex: 0,
         onKeyDown: (e) => {
           e.preventDefault()
+          let newCursorIdx = terminalCursorIndex
+          // console.log('BEFOER', e.key, newCursorIdx)
+          // handle Arrows
+          if (e.key === 'ArrowRight') newCursorIdx = terminalCursorIndex - 1
+          if (e.key === 'ArrowLeft') newCursorIdx = terminalCursorIndex + 1
+          // dont go above or below
+          if (newCursorIdx > terminalText.length) newCursorIdx = terminalText.length
+          if (newCursorIdx < 0) newCursorIdx = 0
+          updateCursorIndex(newCursorIdx)
           // TODO: factor this conditional into a helper function
+          // https://stackoverflow.com/questions/20817618/is-there-a-splice-method-for-strings/21350614#21350614
+          // console.log('AFTER', e.key, newCursorIdx)
           if(alphabetAndNumbers.includes(e.key)) { 
             tempUpdateTerminalText(terminalText + e.key)
           } else if(e.key === 'Backspace') {

@@ -34,6 +34,13 @@ function terminalText (state = 'bon_appetit!', action) {
   }
 }
 
+function terminalCursorIndex (state = 0, action) {
+  switch(action.type) {
+    case 'UPDATE_CURSOR_IDX': return action.idx
+    default: return state
+  }
+}
+
 function isFullScreen (state = false, action) {
   switch(action.type) {
     case 'SET_FULLSCREEN': return !state
@@ -81,10 +88,16 @@ const tempUpdateTerminalText = (text) => ({
 
 const setFullScreen = () => ({ type: 'SET_FULLSCREEN' })
 
+const updateCursorIndex = (idx) => ({
+  type: 'UPDATE_CURSOR_IDX',
+  idx
+})
+
 // trying different exports cos that seems like fun
 module.exports.joesReducers = {
   homeData,
   isFullScreen,
+  terminalCursorIndex,
   terminalText,
   tableData,
   view
@@ -98,5 +111,6 @@ module.exports.joesActions = {
   setHomeData,
   setTableData,
   tempUpdateTerminalText,
+  updateCursorIndex,
   updateTerminalText,
 }
