@@ -57,8 +57,11 @@ const TermText = connectRedux(
   }) => h('div', {
         // tabIndex 0 means that a div element can have 'focus' and listen to keyboard events
         tabIndex: 0,
+        // TODO: factor this into a helper function: *-util.js
+        //        will have to pass object of actions into this function same as fetch-util
         onKeyDown: (e) => {
           e.preventDefault()
+          // afterKeyPress, evaluate cursor position
           let newCursorIdx = terminalCursorIndex
           // console.log('BEFOER', e.key, newCursorIdx)
           // handle Arrows
@@ -67,15 +70,18 @@ const TermText = connectRedux(
           // dont go above or below
           if (newCursorIdx > terminalText.length) newCursorIdx = terminalText.length
           if (newCursorIdx < 0) newCursorIdx = 0
+          // after evaluating new cursorIdx, update in redux
           updateCursorIndex(newCursorIdx)
-          // TODO: factor this conditional into a helper function
           // https://stackoverflow.com/questions/20817618/is-there-a-splice-method-for-strings/21350614#21350614
           // console.log('AFTER', e.key, newCursorIdx)
+          // handle input keys
           if(alphabetAndNumbers.includes(e.key)) { 
             tempUpdateTerminalText(terminalText + e.key)
           } else if(e.key === 'Backspace') {
             tempUpdateTerminalText(terminalText.substring(0, terminalText.length - 1))
           } else if(e.key === 'Enter') {
+            // enter will perma-update redux terminal text(perma = cached)
+            // TODO: also will try to execute the query entered by the user
             updateTerminalText(terminalText)
           }
         },
