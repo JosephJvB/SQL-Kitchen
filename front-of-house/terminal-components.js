@@ -7,8 +7,6 @@ const {
   updateTerminalText
 } = require('./redux').joesActions
 
-const alphabetAndNumbers = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '=', '\'', , '"', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-
 const {
   nukeRedux,
   setFullScreen,
@@ -62,24 +60,27 @@ const TermText = connectRedux(
         // keyDown v keyPress: https://stackoverflow.com/questions/4843472/javascript-listener-keypress-doesnt-detect-backspace
         onKeyDown: (e) => {
           // for how to do string stuff:https://stackoverflow.com/questions/20817618/is-there-a-splice-method-for-strings/21350614#21350614
-          // evaluate cursor position
+          // HANDLE CURSOR
           let newCursorIdx = terminalCursorIndex
           if (e.key === 'ArrowRight') newCursorIdx = terminalCursorIndex - 1
           if (e.key === 'ArrowLeft') newCursorIdx = terminalCursorIndex + 1
-          if (e.key === 'Backspace') tempUpdateTerminalText(terminalText.substring(0, terminalText.length - 1))
-          // enter to submit, shift enter for new line
-          // https://stackoverflow.com/questions/37557990/detecting-combination-keypresses-control-alt-shift/37559790
-          if (e.key === 'Enter') {
-            e.shiftKey
-              ? tempUpdateTerminalText(terminalText + '\n') // new line
-              : updateTerminalText(terminalText) // submit
-          }
           // dont go above or below
           if (newCursorIdx > terminalText.length) newCursorIdx = terminalText.length
           if (newCursorIdx < 0) newCursorIdx = 0
           // after evaluating new cursorIdx, update in redux
-          console.log(newCursorIdx)
           updateCursorIndex(newCursorIdx)
+
+          // BACKSPACE
+          if (e.key === 'Backspace') tempUpdateTerminalText(terminalText.substring(0, terminalText.length - 1))
+
+          // ENTER
+          //https://stackoverflow.com/questions/37557990/detecting-combination-keypresses-control-alt-shift/37559790
+          if (e.key === 'Enter') {
+            // if shift is held: newline, else submit
+            e.shiftKey
+              ? tempUpdateTerminalText(terminalText + '\n')
+              : updateTerminalText(terminalText)
+          }
         },
         // KEYPRESS FOR PRINTABLE KEYS: alphas, numbers, characters
         onKeyPress: (e) => {
