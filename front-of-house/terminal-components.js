@@ -4,13 +4,15 @@ const { connect: connectRedux } = require('react-redux')
 const {
   tempUpdateTerminalText,
   updateCursorIndex,
-  updateTerminalText
-} = require('./redux').joesActions
-
-const {
+  updateTerminalText,
   nukeRedux,
   setFullScreen,
 } = require('./redux').joesActions
+
+const {
+  handleKeyDown,
+  handleKeyPress,
+}= require('./keyboard-util')
 
 const TermActions = connectRedux(
   // selector
@@ -31,7 +33,6 @@ const TermActions = connectRedux(
       h('div', {onClick: setFullScreen, style: {height: '13px', width: '13px', border: '0.5px solid #28911d', backgroundColor: '#3AD12A', marginLeft: '0.6rem', marginTop: '3px', borderRadius: '10px'}}),
     ]),
 )
-    
 const TermText = connectRedux(
   // selector
   ({
@@ -55,40 +56,19 @@ const TermText = connectRedux(
   }) => h('div', {
         // tabIndex 0 means that a div element can have 'focus' and listen to keyboard events
         tabIndex: 0,
-        // TODO: factor this into a helper function: *-util.js
-        //        will have to pass object of actions into this function same as fetch-util
-        // keyDown v keyPress: https://stackoverflow.com/questions/4843472/javascript-listener-keypress-doesnt-detect-backspace
-        onKeyDown: (e) => {
-          // for how to do string stuff:https://stackoverflow.com/questions/20817618/is-there-a-splice-method-for-strings/21350614#21350614
-          // HANDLE CURSOR
-          let newCursorIdx = terminalCursorIndex
-          if (e.key === 'ArrowRight') newCursorIdx = terminalCursorIndex - 1
-          if (e.key === 'ArrowLeft') newCursorIdx = terminalCursorIndex + 1
-          // dont go above or below
-          if (newCursorIdx > terminalText.length) newCursorIdx = terminalText.length
-          if (newCursorIdx < 0) newCursorIdx = 0
-          // after evaluating new cursorIdx, update in redux
-          updateCursorIndex(newCursorIdx)
-
-          // BACKSPACE
-          if (e.key === 'Backspace') tempUpdateTerminalText(terminalText.substring(0, terminalText.length - 1))
-
-          // ENTER
-          //https://stackoverflow.com/questions/37557990/detecting-combination-keypresses-control-alt-shift/37559790
-          if (e.key === 'Enter') {
-            // if shift is held: newline, else submit
-            e.shiftKey
-              ? tempUpdateTerminalText(terminalText + '\n')
-              : updateTerminalText(terminalText)
-          }
-        },
-        // KEYPRESS FOR PRINTABLE KEYS: alphas, numbers, characters
-        onKeyPress: (e) => {
-          // enter seems to be evaluated as a 'printable key'. Ignore it or string 'Enter' is printed.
-          if(e.key !== 'Enter') {
-            tempUpdateTerminalText(terminalText + e.key)
-          }
-        },
+        // KEYDOWN FOR NON-PRINTABLE KEYS: control, backspace, arrows
+        onKeyDown: (e) => handleKeyDown(e, {
+          tempUpdateTerminalText,
+          terminalCursorIndex,
+          terminalText,
+          updateCursorIndex,
+          updateTerminalText,
+        }),
+        // KEYPRESS FOR PRINTABLE KEYS: alphas, numbers, characters: '', "", []
+        onKeyPress: (e) => handleKeyPress(e, {
+          tempUpdateTerminalText,
+          terminalText,
+        }),
         key: 'KHALED',
         style: {minHeight: 'fit-content', display: 'flex', flexDirection: 'row'},
         id: 'TERM_SCREEN'
