@@ -53,7 +53,11 @@ const TermText = connectRedux(
     tempUpdateTerminalText,
     updateCursorIndex,
     updateTerminalText
-  }) => h('div', {
+  }) => {
+    const textArr = terminalText.split('')
+    textArr.splice(terminalText.length - terminalCursorIndex, 0, '|')
+    const termTextWithCursor = textArr.join('')
+    return h('div', {
         // tabIndex 0 means that a div element can have 'focus' and listen to keyboard events
         tabIndex: 0,
         // KEYDOWN FOR NON-PRINTABLE KEYS: control, backspace, arrows
@@ -77,11 +81,19 @@ const TermText = connectRedux(
         h('div', {style: {padding: '0 2rem 0 0.5rem', display: 'flex', flexDirection: 'row', whiteSpace: 'pre-wrap', width: '100%', borderTop: 'none'}}, [
           h('p', {style: {color: '#f1f2f6', paddingRight: '0.5rem'}}, 'SQL_KITCHEN'),
           h('p', {style: {color: '#fff200', paddingRight: '0.5rem'}}, '$:'),
-          h('p', {style: {color: '#3AD12A'}}, terminalText),
+          h('p', {
+            // style: {color: '#3AD12A'}
+          }, [
+            ...termTextWithCursor.split('').map((letter, i) => h('span', {
+              id: terminalCursorIndex === terminalText.length - i ? 'BLINKING_CURSOR' : null,
+              style: { color: terminalCursorIndex === terminalText.length - i ? '#fffa65' : '#3AD12A' }
+            }, letter))
+          ]),
           // note that cursor is not in the right place when termText is multi-line.
-          h('p', {id: 'BLINKING_CURSOR', style: {color: '#fff200'}}, '_'),
+          // h('p', {id: 'BLINKING_CURSOR', style: {color: '#fff200'}}, '_'),
         ])
       ])
+    }
   )
       
 module.exports = {
