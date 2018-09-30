@@ -59,7 +59,7 @@ const TermText = connectRedux(
         tabIndex: 0,
         // TODO: factor this into a helper function: *-util.js
         //        will have to pass object of actions into this function same as fetch-util
-        // KEYDOWN FOR NON-PRINTABLE KEYS: backspace, enter, arrowkeys etc
+        // keyDown v keyPress: https://stackoverflow.com/questions/4843472/javascript-listener-keypress-doesnt-detect-backspace
         onKeyDown: (e) => {
           // for how to do string stuff:https://stackoverflow.com/questions/20817618/is-there-a-splice-method-for-strings/21350614#21350614
           // evaluate cursor position
@@ -67,7 +67,13 @@ const TermText = connectRedux(
           if (e.key === 'ArrowRight') newCursorIdx = terminalCursorIndex - 1
           if (e.key === 'ArrowLeft') newCursorIdx = terminalCursorIndex + 1
           if (e.key === 'Backspace') tempUpdateTerminalText(terminalText.substring(0, terminalText.length - 1))
-          if (e.key === 'Enter') updateTerminalText(terminalText)
+          // enter to submit, shift enter for new line
+          // https://stackoverflow.com/questions/37557990/detecting-combination-keypresses-control-alt-shift/37559790
+          if (e.key === 'Enter') {
+            e.shiftKey
+              ? tempUpdateTerminalText(terminalText + '\n') // new line
+              : updateTerminalText(terminalText) // submit
+          }
           // dont go above or below
           if (newCursorIdx > terminalText.length) newCursorIdx = terminalText.length
           if (newCursorIdx < 0) newCursorIdx = 0
@@ -77,7 +83,10 @@ const TermText = connectRedux(
         },
         // KEYPRESS FOR PRINTABLE KEYS: alphas, numbers, characters
         onKeyPress: (e) => {
-          tempUpdateTerminalText(terminalText + e.key)
+          // enter seems to be evaluated as a 'printable key'. Ignore it or string 'Enter' is printed.
+          if(e.key !== 'Enter') {
+            tempUpdateTerminalText(terminalText + e.key)
+          }
         },
         key: 'KHALED',
         style: {minHeight: 'fit-content', display: 'flex', flexDirection: 'row'},
