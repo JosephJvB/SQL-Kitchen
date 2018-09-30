@@ -7,7 +7,7 @@ const {
   updateTerminalText
 } = require('./redux').joesActions
 
-const alphabetAndNumbers = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '=', '\'']
+const alphabetAndNumbers = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '=', '\'', , '"', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 const {
   nukeRedux,
@@ -59,31 +59,25 @@ const TermText = connectRedux(
         tabIndex: 0,
         // TODO: factor this into a helper function: *-util.js
         //        will have to pass object of actions into this function same as fetch-util
+        // KEYDOWN FOR NON-PRINTABLE KEYS: backspace, enter, arrowkeys etc
         onKeyDown: (e) => {
-          e.preventDefault()
-          // afterKeyPress, evaluate cursor position
+          // for how to do string stuff:https://stackoverflow.com/questions/20817618/is-there-a-splice-method-for-strings/21350614#21350614
+          // evaluate cursor position
           let newCursorIdx = terminalCursorIndex
-          // console.log('BEFOER', e.key, newCursorIdx)
-          // handle Arrows
           if (e.key === 'ArrowRight') newCursorIdx = terminalCursorIndex - 1
           if (e.key === 'ArrowLeft') newCursorIdx = terminalCursorIndex + 1
+          if (e.key === 'Backspace') tempUpdateTerminalText(terminalText.substring(0, terminalText.length - 1))
+          if (e.key === 'Enter') updateTerminalText(terminalText)
           // dont go above or below
           if (newCursorIdx > terminalText.length) newCursorIdx = terminalText.length
           if (newCursorIdx < 0) newCursorIdx = 0
           // after evaluating new cursorIdx, update in redux
+          console.log(newCursorIdx)
           updateCursorIndex(newCursorIdx)
-          // https://stackoverflow.com/questions/20817618/is-there-a-splice-method-for-strings/21350614#21350614
-          // console.log('AFTER', e.key, newCursorIdx)
-          // handle input keys
-          if(alphabetAndNumbers.includes(e.key)) { 
-            tempUpdateTerminalText(terminalText + e.key)
-          } else if(e.key === 'Backspace') {
-            tempUpdateTerminalText(terminalText.substring(0, terminalText.length - 1))
-          } else if(e.key === 'Enter') {
-            // enter will perma-update redux terminal text(perma = cached)
-            // TODO: also will try to execute the query entered by the user
-            updateTerminalText(terminalText)
-          }
+        },
+        // KEYPRESS FOR PRINTABLE KEYS: alphas, numbers, characters
+        onKeyPress: (e) => {
+          tempUpdateTerminalText(terminalText + e.key)
         },
         key: 'KHALED',
         style: {minHeight: 'fit-content', display: 'flex', flexDirection: 'row'},
