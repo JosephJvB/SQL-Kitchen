@@ -66,6 +66,7 @@ const TermText = connectRedux(
         }),
         // KEYPRESS FOR PRINTABLE KEYS: alphas, numbers, characters: '', "", []
         onKeyPress: (e) => handleKeyPress(e, {
+          terminalCursorIndex,
           tempUpdateTerminalText,
           terminalText,
         }),
