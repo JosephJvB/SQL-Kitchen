@@ -39,12 +39,13 @@ const handleKeyDown = (event, options) => {
   // ENTER
   //https://stackoverflow.com/questions/37557990/detecting-combination-keypresses-control-alt-shift/37559790
   if (event.key === 'Enter') {
-    if(event.shiftKey) {
-      // insert newline at cursor
+    // if ends with semi colon, submit
+    if(terminalText[terminalText.length - 1] === ';') {
+      updateTerminalText(terminalText)
+    } else {
+      // insert new line
       textArray.splice(nextCharacterPosition, 0, '\n')
       tempUpdateTerminalText(textArray.join(''))
-    } else {
-      updateTerminalText(terminalText)
     }
   }
 }
