@@ -12,11 +12,11 @@ const TermActions = connectRedux(
   () => ({}),
   { // actions
     nukeRedux,
-    setFullScreen
+    setFullScreen,
   }
   )(({ // props
       nukeRedux,
-      setFullScreen
+      setFullScreen,
     }) => h('div', {key: 'DJ', style: {minHeight: '20px', width: '100%', backgroundColor: '#dcdde1', borderRadius: '5px 5px 2px 2px', display: 'flex', flexDirection: 'row', border: '0.5px solid #b3b5be'}}, [
       // red 
       h('div', {onClick: nukeRedux, style: {height: '13px', width: '13px', border: '0.5px solid #bf2718', backgroundColor: '#e74c3c', marginLeft: '0.6rem', marginTop: '3px', borderRadius: '10px'}}),

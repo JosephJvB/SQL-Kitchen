@@ -63,12 +63,16 @@ const handleKeyDown = (event, options) => {
       // go to PREV newline, OR end of string
       const newLineIdx = terminalText
       .lastIndexOf('\n', terminalText.length - newCursorIdx - 1)
-      newLineIdx ? newCursorIdx = terminalText.length - newLineIdx : newCursorIdx = terminalText.length
+      newLineIdx
+      ? newCursorIdx = terminalText.length - newLineIdx
+      : newCursorIdx = terminalText.length
     }
     if (event.key === 'ArrowDown') {
       // go to NEXT newline, OR end of string
       const newLineIdx = terminalText.indexOf('\n', terminalText.length - newCursorIdx + 1)
-      newLineIdx > 0 ? newCursorIdx = terminalText.length - newLineIdx : newCursorIdx = 0
+      newLineIdx > 0
+      ? newCursorIdx = terminalText.length - newLineIdx
+      : newCursorIdx = 0
     }
     // dont go above or below
     if (newCursorIdx > terminalText.length) newCursorIdx = terminalText.length

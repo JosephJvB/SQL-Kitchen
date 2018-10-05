@@ -78,12 +78,12 @@ const changeView = (viewData) => ({
 
 const updateTerminalText = (text) => ({
   type: 'UPDATE_TERMINAL_TEXT',
-  text
+  text: forceLinebreaks(text)
 })
 
 const tempUpdateTerminalText = (text) => ({
   type: 'TEMP_UPDATE_TERMINAL_TEXT',
-  text
+  text: forceLinebreaks(text)
 })
 
 const setFullScreen = () => ({ type: 'SET_FULLSCREEN' })
@@ -92,6 +92,14 @@ const updateCursorIndex = (idx) => ({
   type: 'UPDATE_CURSOR_IDX',
   idx
 })
+
+// https://stackoverflow.com/questions/7033639/split-large-string-in-n-size-chunks-in-javascript
+function forceLinebreaks (str) {
+  if(!str) return ''
+  const brokeStr = str.match(/.{1,35}/g)
+  const fixStr = brokeStr.join('\n')
+  return fixStr
+}
 
 // trying different exports cos that seems like fun
 module.exports.joesReducers = {

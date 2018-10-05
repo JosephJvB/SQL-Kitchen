@@ -6,7 +6,6 @@ const {
   TermText
 } = require('./terminal-components')
 const {
-  changeView,
   tempUpdateTerminalText,
   updateCursorIndex,
   updateTerminalText,
@@ -16,6 +15,8 @@ const {
   handleKeyDown,
   handleKeyPress,
 }= require('./keyboard-util')
+
+// render a component in keybind-listening wrapper
 
 module.exports = connectRedux(
 ({
