@@ -16,9 +16,15 @@
 				*::selection {
 					background-color: #fffa65;
 				}
+				/* add a fake border so appling the cursor-border doesnt make the letters jump around */
+				#BORDER_FAKE {
+					border-left: solid 1px #082E38;
+				}
+
 				/* https://stackoverflow.com/questions/16344354/how-to-make-blinking-flashing-text-with-css-3 */
 				#BLINKING_CURSOR {
-					animation: blinker 1.5s ease-in-out infinite;
+					border-left: solid 1px #fffa65;
+					animation: blinker 1.3s linear infinite;
 				}
 
 				@keyframes blinker {
