@@ -53,11 +53,7 @@ const TermText = connectRedux(
     tempUpdateTerminalText,
     updateCursorIndex,
     updateTerminalText
-  }) => {
-    const textArr = terminalText.split('')
-    textArr.splice(terminalText.length - terminalCursorIndex, 0, '|')
-    const termTextWithCursor = textArr.join('')
-    return h('div', {
+  }) => h('div', {
         // tabIndex 0 means that a div element can have 'focus' and listen to keyboard events
         tabIndex: 0,
         // KEYDOWN FOR NON-PRINTABLE KEYS: control, backspace, arrows
@@ -84,16 +80,26 @@ const TermText = connectRedux(
           h('p', {
             // style: {color: '#3AD12A'}
           }, [
-            ...termTextWithCursor.split('').map((letter, i) => h('span', {
-              id: terminalCursorIndex === terminalText.length - i ? 'BLINKING_CURSOR' : null,
-              style: { color: terminalCursorIndex === terminalText.length - i ? '#fffa65' : '#3AD12A' }
-            }, letter))
+            // DOM el to show cursor is at START of text
+            h('span', {
+              id: terminalCursorIndex === terminalText.length ? 'BLINKING_CURSOR': 'BORDER_FAKE'
+            }, ''),
+            // print a span for each letter: print letter + blank span for cursor
+            // if cursor is 'at' the letter index, blink the left border of blank span
+            terminalText.split('').map((letter, i) => h('span', {
+              key: i,
+              style: {
+                color:'#3AD12A'
+              },
+            }, [
+              letter,
+              h('span', {
+                id: terminalCursorIndex === terminalText.length - i - 1 ? 'BLINKING_CURSOR': 'BORDER_FAKE'
+              })
+            ]))
           ]),
-          // note that cursor is not in the right place when termText is multi-line.
-          // h('p', {id: 'BLINKING_CURSOR', style: {color: '#fff200'}}, '_'),
         ])
       ])
-    }
   )
       
 module.exports = {
