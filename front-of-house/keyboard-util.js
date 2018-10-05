@@ -32,6 +32,8 @@ const handleKeyDown = (event, options) => {
   // https://stackoverflow.com/questions/15082553/js-splice-returns-removed-item
   // BACKSPACE
   if (event.key === 'Backspace') {
+    // cant backspace from start of string :)
+    if (nextCharacterPosition === 0) return 
     // remove one item from the position of the cursor
     textArray.splice(nextCharacterPosition - 1, 1)
     tempUpdateTerminalText(textArray.join(''))
