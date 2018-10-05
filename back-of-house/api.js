@@ -67,6 +67,10 @@ api.delete('/api/deleteRow/:table/:id', ({params:  {table, id}}, res) => DB.dele
 	.then(({RES, SQL}) => res.send({RES, SQL}))
 )
 
+api.post('/api/customQuery', ({body: {query}}, res) => DB.customQuerier(query)
+	.then(({RES, SQL}) => res.send({RES, SQL}))
+)
+
 // I think this has to be connected last... It's not calling next SMH my head
 api.use(bundler.middleware())
 

@@ -1,3 +1,5 @@
+const joeFetch = require('./fetch-util')
+
 // USED IN ./terminal-components.js
 
 // keyDown v keyPress: https://stackoverflow.com/questions/4843472/javascript-listener-keypress-doesnt-detect-backspace
@@ -33,7 +35,20 @@ const handleKeyDown = (event, options) => {
   if (event.key === 'Enter') {
     // if ends with semi colon, submit
     if(terminalText[terminalText.length - 1] === ';') {
-      updateTerminalText(terminalText)
+      // FETCH 
+      joeFetch(
+        '/api/customQuery',
+        {
+          method: 'post',
+          body: {query: terminalText}
+        },
+        {
+          success: ({RES, SQL}) => {
+            console.log(RES, SQL)
+            updateTerminalText(SQL)
+          }
+        }
+      )
     } else {
       // insert new line
       textArray.splice(nextCharacterPosition, 0, '\n')

@@ -74,6 +74,14 @@ function tableMaker({table, columns}) {
 		.catch(console.error)
 }
 
+function customQuerier(query) {
+	const endIdx = query.indexOf(';')
+	const cleanQuery = query.slice(0, endIdx)
+	return DB.any(cleanQuery)
+	.then(RES => ({RES, SQL: query}))
+	.catch(console.error)
+}
+
 // DB.$pool.end() closes the DB connection - this needs to be called after every query (I think)
 function helper ({DB, type, result}) {
 	DB.$pool.end()
@@ -81,6 +89,7 @@ function helper ({DB, type, result}) {
 }
 
 module.exports = {
+	customQuerier,
 	tableMaker,
 	tableBreaker,
 	inserter,
