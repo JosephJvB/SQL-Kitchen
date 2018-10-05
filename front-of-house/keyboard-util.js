@@ -12,17 +12,7 @@ const handleKeyDown = (event, options) => {
     updateTerminalText,
   } = options
 
-  
-  // HANDLE CURSOR
   let newCursorIdx = terminalCursorIndex
-  // handle arrow keys
-  if (event.key === 'ArrowRight') newCursorIdx = terminalCursorIndex - 1
-  if (event.key === 'ArrowLeft') newCursorIdx = terminalCursorIndex + 1
-  // dont go above or below
-  if (newCursorIdx > terminalText.length) newCursorIdx = terminalText.length
-  if (newCursorIdx < 0) newCursorIdx = 0
-  // if new cursor position, update in redux
-  if (newCursorIdx !== terminalCursorIndex) updateCursorIndex(newCursorIdx)
   
   // HANDLE ACTION KEYS
   const nextCharacterPosition = terminalText.length - newCursorIdx
@@ -50,6 +40,26 @@ const handleKeyDown = (event, options) => {
       tempUpdateTerminalText(textArray.join(''))
     }
   }
+    // HANDLE CURSOR
+    // handle arrow keys
+    if (event.key === 'ArrowRight') newCursorIdx = terminalCursorIndex - 1
+    if (event.key === 'ArrowLeft') newCursorIdx = terminalCursorIndex + 1
+    if (event.key === 'ArrowUp') {
+      // go to PREV newline, OR end of string
+      const newLineIdx = terminalText
+      .lastIndexOf('\n', terminalText.length - newCursorIdx - 1)
+      newLineIdx ? newCursorIdx = terminalText.length - newLineIdx : newCursorIdx = terminalText.length
+    }
+    if (event.key === 'ArrowDown') {
+      // go to NEXT newline, OR end of string
+      const newLineIdx = terminalText.indexOf('\n', terminalText.length - newCursorIdx + 1)
+      newLineIdx > 0 ? newCursorIdx = terminalText.length - newLineIdx : newCursorIdx = 0
+    }
+    // dont go above or below
+    if (newCursorIdx > terminalText.length) newCursorIdx = terminalText.length
+    if (newCursorIdx < 0) newCursorIdx = 0
+    // if new cursor position, update in redux
+    if (newCursorIdx !== terminalCursorIndex) updateCursorIndex(newCursorIdx)
 }
 
 // KEYPRESS FOR PRINTABLE KEYS: alphas, numbers, characters
