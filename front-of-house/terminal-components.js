@@ -2,17 +2,10 @@ const h = require('react-hyperscript')
 const { connect: connectRedux } = require('react-redux')
 
 const {
-  tempUpdateTerminalText,
-  updateCursorIndex,
-  updateTerminalText,
   nukeRedux,
   setFullScreen,
 } = require('./redux').joesActions
 
-const {
-  handleKeyDown,
-  handleKeyPress,
-}= require('./keyboard-util')
 
 const TermActions = connectRedux(
   // selector
@@ -42,34 +35,11 @@ const TermText = connectRedux(
     terminalCursorIndex,
     terminalText,
   }),
-  {
-    tempUpdateTerminalText,
-    updateCursorIndex,
-    updateTerminalText,
-  } // actions
+  {} // actions
   )(({ // props
     terminalText,
     terminalCursorIndex,
-    tempUpdateTerminalText,
-    updateCursorIndex,
-    updateTerminalText
   }) => h('div', {
-        // tabIndex 0 means that a div element can have 'focus' and listen to keyboard events
-        tabIndex: 0,
-        // KEYDOWN FOR NON-PRINTABLE KEYS: control, backspace, arrows
-        onKeyDown: (e) => handleKeyDown(e, {
-          tempUpdateTerminalText,
-          terminalCursorIndex,
-          terminalText,
-          updateCursorIndex,
-          updateTerminalText,
-        }),
-        // KEYPRESS FOR PRINTABLE KEYS: alphas, numbers, characters: '', "", []
-        onKeyPress: (e) => handleKeyPress(e, {
-          terminalCursorIndex,
-          tempUpdateTerminalText,
-          terminalText,
-        }),
         key: 'KHALED',
         style: {minHeight: 'fit-content', display: 'flex', flexDirection: 'row'},
         id: 'TERM_SCREEN'

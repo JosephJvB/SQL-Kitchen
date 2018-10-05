@@ -7,20 +7,37 @@ const {
   TermActions,
   TermText
 } = require('./terminal-components')
-const { changeView } = require('./redux').joesActions
+const {
+  changeView,
+  tempUpdateTerminalText,
+  updateCursorIndex,
+  updateTerminalText,
+} = require('./redux').joesActions
+
+const {
+  handleKeyDown,
+  handleKeyPress,
+}= require('./keyboard-util')
 
 module.exports = connectRedux(
   // selector
   ({
     view: {location, params},
-    isFullScreen
+    isFullScreen,
+    terminalCursorIndex,
+    terminalText,
   }) => ({
     location,
     params,
     isFullScreen,
+    terminalCursorIndex,
+    terminalText,
   }),
   { // actions go here
     changeView,
+    tempUpdateTerminalText,
+    updateCursorIndex,
+    updateTerminalText,
   }
   )(({
     // props
@@ -28,18 +45,59 @@ module.exports = connectRedux(
     location,
     params,
     isFullScreen,
+    tempUpdateTerminalText,
+    terminalCursorIndex,
+    terminalText,
+    updateCursorIndex,
+    updateTerminalText,
 }) => {
     const height = isFullScreen ? '100vh' : '85vh'
     const width = isFullScreen ? '97vw' : '85vw'
     switch(location) {
-      case 'HOME': return h('div', {style: {width, borderRadius: '10px 10px 0 0', margin: 'auto', display: 'flex', flexDirection: 'column', backgroundColor: '#082E38', border: '1px solid #718093'}}, [
+      case 'HOME': return h('div', {
+        style: {width, borderRadius: '10px 10px 0 0', margin: 'auto', display: 'flex', flexDirection: 'column', backgroundColor: '#082E38', border: '1px solid #718093'},
+        // tabIndex 0 means that a div element can have 'focus' and listen to keyboard events
+        tabIndex: 0,
+        // KEYDOWN FOR NON-PRINTABLE KEYS: control, backspace, arrows
+        onKeyDown: (e) => handleKeyDown(e, {
+          tempUpdateTerminalText,
+          terminalCursorIndex,
+          terminalText,
+          updateCursorIndex,
+          updateTerminalText,
+        }),
+        // KEYPRESS FOR PRINTABLE KEYS: alphas, numbers, characters: '', "", []
+        onKeyPress: (e) => handleKeyPress(e, {
+          terminalCursorIndex,
+          tempUpdateTerminalText,
+          terminalText,
+        }),
+      }, [
         h(TermActions),
         h('div', {style:{overflowX: 'hidden', overflowY: 'scroll', height}}, [
           h(TermText),
           h(Home, {params})
         ])
       ])
-      case 'TABLE': return h('div', {style: {width, borderRadius: '10px 10px 0 0', margin: 'auto', display: 'flex', flexDirection: 'column', backgroundColor: '#082E38', border: '1px solid #718093'}}, [
+      case 'TABLE': return h('div', {
+        style: {width, borderRadius: '10px 10px 0 0', margin: 'auto', display: 'flex', flexDirection: 'column', backgroundColor: '#082E38', border: '1px solid #718093'},
+        // tabIndex 0 means that a div element can have 'focus' and listen to keyboard events
+        tabIndex: 0,
+        // KEYDOWN FOR NON-PRINTABLE KEYS: control, backspace, arrows
+        onKeyDown: (e) => handleKeyDown(e, {
+          tempUpdateTerminalText,
+          terminalCursorIndex,
+          terminalText,
+          updateCursorIndex,
+          updateTerminalText,
+        }),
+        // KEYPRESS FOR PRINTABLE KEYS: alphas, numbers, characters: '', "", []
+        onKeyPress: (e) => handleKeyPress(e, {
+          terminalCursorIndex,
+          tempUpdateTerminalText,
+          terminalText,
+        }),
+      }, [
         h(TermActions),
         h('div', {style:{overflowX: 'hidden', overflowY: 'scroll', height}}, [
           h(TermText),
