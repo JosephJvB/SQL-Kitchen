@@ -52,6 +52,10 @@ cache.getAll().then((data) => {
 		rootElement
 	)
 })
+.then(() => {
+	// autofocus div to type in terminal on page load
+	document.getElementById('WRAPPER') && document.getElementById('WRAPPER').focus()
+})
 // wat
 .catch((err) => {
 	console.error('WEE WOO WEE WOO:\n\n', err)

@@ -39,6 +39,7 @@ module.exports = connectRedux(
   updateCursorIndex,
   updateTerminalText,
 }) => h('div', {
+      id: 'WRAPPER',
       style: Object.assign({}, Component.props.style),
       // tabIndex 0 means that a div element can have 'focus' and listen to keyboard events
       tabIndex: 0,
