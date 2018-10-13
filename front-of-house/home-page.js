@@ -1,7 +1,7 @@
 const h = require('react-hyperscript')
 const { connect: connectRedux } = require('react-redux')
 
-const joeFetch = require('./fetch-util')
+const joeFetch = require('./util/fetch')
 const {
 	changeView,
 	nukeRedux,

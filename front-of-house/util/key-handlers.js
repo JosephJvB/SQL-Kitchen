@@ -1,4 +1,4 @@
-const joeFetch = require('./fetch-util')
+const joeFetch = require('./fetch')
 
 // USED IN ./terminal-components.js
 
@@ -44,7 +44,8 @@ const handleKeyDown = (event, options) => {
         },
         {
           success: ({RES, SQL}) => {
-            console.log(RES, SQL)
+            console.log(JSON.stringify(RES, null, 2))
+            // console.table(RES)
             updateTerminalText(SQL)
           }
         }

@@ -14,7 +14,7 @@ const {
 const {
   handleKeyDown,
   handleKeyPress,
-}= require('./keyboard-util')
+}= require('./util/key-handlers')
 
 // render a component in keybind-listening wrapper
 
