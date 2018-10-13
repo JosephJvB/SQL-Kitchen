@@ -1,4 +1,4 @@
-const enforceLinebreaks = require('./util/linebreaks')
+const enforceLinebreaks = require('./util/linebreak')
 
 // reducers = functions
 function homeData (state = [], action) {

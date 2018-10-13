@@ -6,7 +6,7 @@ const inputTypeMap = {
   character: 'text'
 }
 
-const joeFetch = require('./fetch-util')
+const joeFetch = require('./util/fetch')
 const {
   addTableItem,
   changeView,
