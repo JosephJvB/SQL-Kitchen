@@ -75,10 +75,14 @@ const TermText = connectRedux(
 function enforceLinebreaks (text) {
   if(!text) return ''
   const n = Number((window.innerWidth / 23).toString().split('.')[0])
-  const reggie = new RegExp(`(.|[\\n]){1,${n}}`, 'g')
-  const ye = text.match(reggie)
-  // console.log(ye.join(\n))
-  return ye.join('\n')
+  const reggie = new RegExp(`.{1,${n}}`, 'g')
+  // split on n
+  const linesRaw = text.split('\n')
+  const linesChunked = linesRaw.reduce((acc, line) => line.length >= n
+    ? acc.concat(line.match(reggie))
+    : acc.concat(line)
+  , [])
+  return linesChunked.join('\n')
 }
       
 module.exports = {
