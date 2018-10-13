@@ -1,3 +1,5 @@
+const enforceLinebreaks = require('./util/linebreaks')
+
 // reducers = functions
 function homeData (state = [], action) {
   switch(action.type) {
@@ -92,20 +94,6 @@ const updateCursorIndex = (idx) => ({
   type: 'UPDATE_CURSOR_IDX',
   idx
 })
-
-function enforceLinebreaks (text) {
-  if(!text) return ''
-  const n = Number((window.innerWidth / 23).toString().split('.')[0])
-  const reggie = new RegExp(`.{1,${n}}`, 'g')
-  // split, chunk, join
-  // if any line is too large, chunk it
-  const linesChunked = text
-    .split('\n')
-    .reduce((acc, line) => acc.concat(line.length >= n ? line.match(reggie) : line), [])
-    .join('\n')
-    
-  return linesChunked
-}
 
 // trying different exports cos that seems like fun
 module.exports.joesReducers = {
