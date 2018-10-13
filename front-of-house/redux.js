@@ -97,14 +97,14 @@ function enforceLinebreaks (text) {
   if(!text) return ''
   const n = Number((window.innerWidth / 23).toString().split('.')[0])
   const reggie = new RegExp(`.{1,${n}}`, 'g')
-  // split on n
-  const linesRaw = text.split('\n')
+  // split, chunk, join
   // if any line is too large, chunk it
-  const linesChunked = linesRaw.reduce((acc, line) => line.length >= n
-    ? acc.concat(line.match(reggie))
-    : acc.concat(line)
-  , [])
-  return linesChunked.join('\n')
+  const linesChunked = text
+    .split('\n')
+    .reduce((acc, line) => acc.concat(line.length >= n ? line.match(reggie) : line), [])
+    .join('\n')
+    
+  return linesChunked
 }
 
 // trying different exports cos that seems like fun
