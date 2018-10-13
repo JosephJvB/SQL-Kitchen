@@ -78,7 +78,6 @@ function tableMaker({table, columns}) {
 function customQuerier(query) {
 	const endIdx = query.indexOf(';')
 	const cleanQuery = query.slice(0, endIdx).replace('\n', '')
-	console.log(cleanQuery)
 	return DB.any(cleanQuery)
 	.then(RES => ({RES, SQL: query}))
 	.catch(console.error)
