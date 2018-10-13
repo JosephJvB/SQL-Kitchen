@@ -78,12 +78,12 @@ const changeView = (viewData) => ({
 
 const updateTerminalText = (text) => ({
   type: 'UPDATE_TERMINAL_TEXT',
-  text
+  text: enforceLinebreaks(text)
 })
 
 const tempUpdateTerminalText = (text) => ({
   type: 'TEMP_UPDATE_TERMINAL_TEXT',
-  text
+  text: enforceLinebreaks(text)
 })
 
 const setFullScreen = () => ({ type: 'SET_FULLSCREEN' })
@@ -92,6 +92,20 @@ const updateCursorIndex = (idx) => ({
   type: 'UPDATE_CURSOR_IDX',
   idx
 })
+
+function enforceLinebreaks (text) {
+  if(!text) return ''
+  const n = Number((window.innerWidth / 23).toString().split('.')[0])
+  const reggie = new RegExp(`.{1,${n}}`, 'g')
+  // split on n
+  const linesRaw = text.split('\n')
+  // if any line is too large, chunk it
+  const linesChunked = linesRaw.reduce((acc, line) => line.length >= n
+    ? acc.concat(line.match(reggie))
+    : acc.concat(line)
+  , [])
+  return linesChunked.join('\n')
+}
 
 // trying different exports cos that seems like fun
 module.exports.joesReducers = {
