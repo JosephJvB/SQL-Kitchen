@@ -33,7 +33,7 @@ const TermText = connectRedux(
     terminalText,
   }) => ({
     terminalCursorIndex,
-    terminalText,
+    terminalText: enforceLinebreaks(terminalText),
   }),
   {} // actions
   )(({ // props
@@ -71,6 +71,15 @@ const TermText = connectRedux(
         ])
       ])
   )
+
+function enforceLinebreaks (text) {
+  if(!text) return ''
+  const n = Number((window.innerWidth / 23).toString().split('.')[0])
+  const reggie = new RegExp(`(.|[\\n]){1,${n}}`, 'g')
+  const ye = text.match(reggie)
+  // console.log(ye.join(\n))
+  return ye.join('\n')
+}
       
 module.exports = {
   TermActions,
