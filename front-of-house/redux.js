@@ -78,12 +78,12 @@ const changeView = (viewData) => ({
 
 const updateTerminalText = (text) => ({
   type: 'UPDATE_TERMINAL_TEXT',
-  text: forceLinebreaks(text)
+  text
 })
 
 const tempUpdateTerminalText = (text) => ({
   type: 'TEMP_UPDATE_TERMINAL_TEXT',
-  text: forceLinebreaks(text)
+  text
 })
 
 const setFullScreen = () => ({ type: 'SET_FULLSCREEN' })
@@ -92,32 +92,6 @@ const updateCursorIndex = (idx) => ({
   type: 'UPDATE_CURSOR_IDX',
   idx
 })
-
-// https://stackoverflow.com/questions/7033639/split-large-string-in-n-size-chunks-in-javascript
-// /(.|\n){1,20}/g
-function forceLinebreaks (str) {
-  if(!str) return ''
-  // const n = Number((window.innerWidth / 20).toString().split('.')[0])
-  const n = 15
-  let result = ''
-  for (let i = 0; i < str.length; i++) {
-    // newline every n letters since the last newline or start of string...
-    const newLineCondition = i > 0 && str[i] !== '\n' && (
-      str.substring(0, i+1) === str && i+1 === n // start of string: WORKS
-      || str.substring(str.lastIndexOf('\n'), i + 1).length === n
-    )
-
-    str.includes('\n') && console.log(
-      str[i] === '\n',
-      str.substring(str.lastIndexOf('\n'), i + 1)
-    )
-
-    if(newLineCondition) result += '\n'
-    result +=str[i]
-  }
-  // console.log(result, n)
-  return result
-}
 
 // trying different exports cos that seems like fun
 module.exports.joesReducers = {
