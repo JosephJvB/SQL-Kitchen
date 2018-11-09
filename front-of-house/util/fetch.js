@@ -15,16 +15,34 @@ const addHeadersToBodyAndStringify = (opts) => Object.assign(opts, {
 
 module.exports = (path, options, actions) => {
 	// actions.setFetching() - tell ui-state that fetch is in progress
+
+	// error handling: prompt with helpful messages
+	if(!path || !options || !actions) {
+		return console.error('joeFetch expects params = (path:String, options:Object, actions:Object)')
+	}
+	if(!actions.success) {
+		return console.error('Param actions(type Object) MUST have a success property(type Function)')
+	}
+	
 	// if u have body, add headers and stringify body 🤴
 	return fetch(
 		path,
 		options.body ? addHeadersToBodyAndStringify(options) : options
 	)
-	.then(res => res.json())
-	// .then(console.log)
-	.then(actions.success) // tell ui-state that fetch success..
+	.then((response) => { // can catch error here with res.ok
+		return response.json()
+		.then((json) => {
+			if(response.ok) {
+				action.success(json)
+			} else {
+				// handle joeError from express API
+				console.error(json)
+			}
+		})
+	})
 	.catch(err => {
-		// actions.setFetchError() - tell ui-state that fetch failed
-		console.error('ERROR AT PATH', path, '\n', err)
+		// window.fetch only catches network errors.
+		// eg: bad path, cors error. I think?
+		console.error('joeFetch NETWORK error @ PATH', path, err)
 	})
 }
