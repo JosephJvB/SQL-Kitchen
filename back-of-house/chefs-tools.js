@@ -34,12 +34,20 @@ function tableMaker({table, columns}) {
 	const idColumn = 'id serial primary key'
 	const SQL = `create table ${table} (${idColumn}, ${sqlColumns})`
 	return DB.none(SQL)
-		.catch(console.error)
+		.catch(err => {
+			// log error and pass it on
+			console.error(err)
+			return err
+		})
 	}
 	
 	function tableBreaker(table) {
 		return DB.none(`drop table "${table}"`)
-		.catch(console.error)
+		.catch(err => {
+			// log error and pass it on
+			console.error(err)
+			return err
+		})
 	}
 	
 	function inserter({table, items}) {
@@ -49,21 +57,33 @@ function tableMaker({table, columns}) {
 		const SQL = `insert into ${table} (${sqlColumns}) values (${sqlValues}) returning *`
 		return DB.many(SQL)
 		.then(RES => ({RES, SQL}))
-		.catch(console.error)
+		.catch(err => {
+			// log error and pass it on
+			console.error(err)
+			return err
+		})
 	}
 	
 	function deleter({table, condition}) {
 		const SQL = `delete from ${table} where ${condition} returning *`
 		return DB.many(SQL)
 		.then(RES => ({RES, SQL}))
-		.catch(console.error)
+		.catch(err => {
+			// log error and pass it on
+			console.error(err)
+			return err
+		})
 	}
 	
 	function updater({table, items, condition}) {
 		// items = [{column, value}, {column, value}, ...]
 		const sqlItems = items.reduce((str, item, i) => `${str}${item.column} = ${item.value}${i + 1 < items.length ? ',' : ''}`, '')
 		return DB.many(`update ${table} set ${sqlItems} where ${condition} returning *`)
-		.catch(console.error)
+		.catch(err => {
+			// log error and pass it on
+			console.error(err)
+			return err
+		})
 	}
 	
 	function reader({table, columns, condition}) {
@@ -72,21 +92,29 @@ function tableMaker({table, columns}) {
 		const SQL = `select ${sqlColumns} from ${table}${condition ? ' where ' + condition : ''}`
 		return DB.any(SQL)
 		.then(RES => ({RES, SQL}))
-		.catch(console.error)
-}
-
-function customQuerier(query) {
-	const endIdx = query.indexOf(';')
-	const cleanQuery = query.slice(0, endIdx).replace('\n', '')
-	return DB.any(cleanQuery)
-	.then(RES => ({RES, SQL: query}))
-	.catch(console.error)
-}
-
-// DB.$pool.end() closes the DB connection - this needs to be called after every query (I think)
-function helper ({DB, type, result}) {
-	DB.$pool.end()
-	return console.error(type + ':', result)
+		.catch(err => {
+			// log error and pass it on
+			console.error(err)
+			return err
+		})
+	}
+	
+	function customQuerier(query) {
+		const endIdx = query.indexOf(';')
+		const cleanQuery = query.slice(0, endIdx).replace('\n', '')
+		return DB.any(cleanQuery)
+		.then(RES => ({RES, SQL: query}))
+		.catch(err => {
+			// log error and pass it on
+			console.error(err)
+			return err
+		})
+	}
+	
+	// DB.$pool.end() closes the DB connection - this needs to be called after every query (I think)
+	function helper ({DB, type, result}) {
+		DB.$pool.end()
+		return console.error(type + ':', result)
 }
 
 module.exports = {
