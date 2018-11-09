@@ -7,6 +7,8 @@ const DB = require('./chefs-tools')
 
 api.use(express.json())
 
+// joeFetch always expects JSON response. Please res.send() Objects, not Strings
+
 /* more SQL > JS way of getting table column info
 		- doesnt get table_name tho.
 		- i dont know how to select from two tables at once, I assume that's a join.
@@ -40,8 +42,10 @@ api.get('/api/home', (req, res) => DB.reader({ // get all table names
 	.then((allTablesData) => res.send({
 		// send {data: [{tableName: columnData}, {}, ...]}
 		RES:	tableNames.reduce((acc, table, i) => [].concat(acc, [{ tableName: table.table_name, columnData: allTablesData[i].RES }]), []),
-		SQL: `${SQL_ONE}\n-----\n${allTablesData[allTablesData.length - 1].SQL}` // just grab the last SQL string 🤷‍♀️
+		SQL: `${SQL_ONE}\n-----\n${allTablesData[allTablesData.length - 1].SQL}`, // just grab the last SQL string 🤷‍♀️
+		status: 200
 	})))
+	.catch(err => res.sendStatus(400))
 )
 
 // GET row data for a single table
@@ -49,13 +53,15 @@ api.get('/api/table/:tableName', (req, res) => DB.reader({
 		table: req.params.tableName,
 		columns: ['*']
 	})
-	.then(({RES, SQL}) => res.send({RES, SQL}))
+	.then(({RES, SQL}) => res.send({RES, SQL, status: 200}))
+	.catch(err => res.sendStatus(400))
 )
 
 // CREATE a new row in a table
 // question to ask: put vs post? I dont have a good answer right now..yikes, that's a weakness
 api.post('/api/newRow', ({body: {table, items}}, res) => DB.inserter({table, items})
-	.then(({RES, SQL}) => res.send({RES, SQL}))
+	.then(({RES, SQL}) => res.send({RES, SQL, status: 200}))
+	.catch(err => res.sendStatus(400))
 )
 
 // DELETE a row in a table
@@ -64,11 +70,21 @@ api.delete('/api/deleteRow/:table/:id', ({params:  {table, id}}, res) => DB.dele
 		table,
 		condition: `id = ${id}`
 	})
-	.then(({RES, SQL}) => res.send({RES, SQL}))
+	.then(({RES, SQL}) => res.send({RES, SQL, status: 200}))
+	.catch(err => res.sendStatus(400))
 )
 
 api.post('/api/customQuery', ({body: {query}}, res) => DB.customQuerier(query)
-	.then(({RES, SQL}) => res.send({RES, SQL}))
+	.then(({RES, SQL}) => {
+		res.send({RES, SQL, status: 200})
+	})
+	.catch(err => {
+		if(err.code === '42601') {
+			res.status(400).send({msg: 'SQL syntax error'}) // send specific error message (make sure you send json)
+		} else {
+			res.sendStatus(400) // send generic error message
+		}
+	})
 )
 
 // I think this has to be connected last... It's not calling next SMH my head
