@@ -35,18 +35,18 @@ function tableMaker({table, columns}) {
 	const SQL = `create table ${table} (${idColumn}, ${sqlColumns})`
 	return DB.none(SQL)
 		.catch(err => {
-			// log error and pass it on
+			// log error and throw to be caught in api
 			console.error(err)
-			return err
+			throw err
 		})
 	}
 	
 	function tableBreaker(table) {
 		return DB.none(`drop table "${table}"`)
 		.catch(err => {
-			// log error and pass it on
+			// log error and throw to be caught in api
 			console.error(err)
-			return err
+			throw err
 		})
 	}
 	
@@ -58,9 +58,9 @@ function tableMaker({table, columns}) {
 		return DB.many(SQL)
 		.then(RES => ({RES, SQL}))
 		.catch(err => {
-			// log error and pass it on
+			// log error and throw to be caught in api
 			console.error(err)
-			return err
+			throw err
 		})
 	}
 	
@@ -69,9 +69,9 @@ function tableMaker({table, columns}) {
 		return DB.many(SQL)
 		.then(RES => ({RES, SQL}))
 		.catch(err => {
-			// log error and pass it on
+			// log error and throw to be caught in api
 			console.error(err)
-			return err
+			throw err
 		})
 	}
 	
@@ -80,9 +80,9 @@ function tableMaker({table, columns}) {
 		const sqlItems = items.reduce((str, item, i) => `${str}${item.column} = ${item.value}${i + 1 < items.length ? ',' : ''}`, '')
 		return DB.many(`update ${table} set ${sqlItems} where ${condition} returning *`)
 		.catch(err => {
-			// log error and pass it on
+			// log error and throw to be caught in api
 			console.error(err)
-			return err
+			throw err
 		})
 	}
 	
@@ -93,9 +93,9 @@ function tableMaker({table, columns}) {
 		return DB.any(SQL)
 		.then(RES => ({RES, SQL}))
 		.catch(err => {
-			// log error and pass it on
+			// log error and throw to be caught in api
 			console.error(err)
-			return err
+			throw err
 		})
 	}
 	
@@ -105,9 +105,9 @@ function tableMaker({table, columns}) {
 		return DB.any(cleanQuery)
 		.then(RES => ({RES, SQL: query}))
 		.catch(err => {
-			// log error and pass it on
+			// log error and throw to be caught in api
 			console.error(err)
-			return err
+			throw err
 		})
 	}
 	
