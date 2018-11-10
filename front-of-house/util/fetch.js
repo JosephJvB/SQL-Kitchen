@@ -3,8 +3,10 @@
 	 path: string - api endpoint to hit
 	 options: object - keys: method, body, headers
 		 - ?keys= mode:('cors'), cache:('default'), redirect:('follow'), referrer:('no-referrer'), credentials:('same origin')
+		 TODO: fetchStatus actions to set UI in 4 states: idle, fetching, success, failure
 
-		TODO: fetchStatus actions to set UI in 4 states: idle, fetching, success, failure
+		I wonder if Im using fetch wrong. or if there is a better way. Mine seems cumbersome as heck. But I guess if I create a fetch wrapper like this, then maybe it becomes easy?
+		Lot of boilerplate tho.
 */
 
 // body needs to be string, and headers needed to tell server how to read req.body(?)
