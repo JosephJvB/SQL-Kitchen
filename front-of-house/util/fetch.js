@@ -15,12 +15,14 @@ const addHeadersToBodyAndStringify = (opts) => Object.assign(opts, {
 
 module.exports = (path, options, actions) => {
 	// actions.setFetching() - tell ui-state that fetch is in progress
-
-	// error handling: prompt with helpful messages
-	if(!path || !options || !actions) {
+	// check params
+	const validPath = path && typeof path === 'string'
+	const validOptions = options && typeof options === 'object'
+	const validActions = actions && typeof actions === 'object'
+	if(!validPath || !validOptions || !validActions) { 
 		return console.error('joeFetch expects params = (path:String, options:Object, actions:Object)')
 	}
-	if(!actions.success) {
+	if(!actions.success || typeof actions.success !== 'function') {
 		return console.error('Param actions(type Object) MUST have a success property(type Function)')
 	}
 	
@@ -29,17 +31,16 @@ module.exports = (path, options, actions) => {
 		path,
 		options.body ? addHeadersToBodyAndStringify(options) : options
 	)
-	.then((response) => { // can catch error here with res.ok
-		return response.json()
+	// https://medium.com/@shahata/why-i-wont-be-using-fetch-api-in-my-apps-6900e6c6fe78
+	.then((response) => response.json()
 		.then((json) => {
 			if(response.ok) {
 				action.success(json)
-			} else {
-				// handle joeError from express API
+			} else { 
+				// here if error at joe DB
 				console.error(json)
 			}
-		})
-	})
+		}))
 	.catch(err => {
 		// window.fetch only catches network errors.
 		// eg: bad path, cors error. I think?
