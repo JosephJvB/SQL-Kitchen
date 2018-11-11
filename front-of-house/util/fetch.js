@@ -34,7 +34,7 @@ module.exports = (path, options, actions) => {
 		options.body ? addHeadersToBodyAndStringify(options) : options
 	)
 	// https://medium.com/@shahata/why-i-wont-be-using-fetch-api-in-my-apps-6900e6c6fe78
-	.then((response) => response.json()
+	.then((response) => response.json()  // turn it to JSON no matter what(my express api will always return JSON unless I mess up in the future)
 		.then((json) => {
 			if(response.ok) {
 				action.success(json)

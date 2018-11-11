@@ -7,7 +7,9 @@ const DB = require('./chefs-tools')
 
 api.use(express.json())
 
-// joeFetch always expects JSON response. Please res.send() Objects, not Strings
+// ALWAYS res.send() an Object.
+// joeFetch always expects JSON response
+// can res.status(400+).send({message, data}) to send custom error responses
 
 /* more SQL > JS way of getting table column info
 		- doesnt get table_name tho.
@@ -80,7 +82,7 @@ api.post('/api/customQuery', ({body: {query}}, res) => DB.customQuerier(query)
 	})
 	.catch(err => {
 		if(err.code === '42601') {
-			res.status(400).send({msg: 'SQL syntax error'}) // send specific error message (make sure you send json)
+			res.status(400).send({msg: 'SQL syntax error'})
 		} else {
 			res.sendStatus(400) // send generic error message
 		}
