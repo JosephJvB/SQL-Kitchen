@@ -37,7 +37,7 @@ module.exports = (path, options, actions) => {
 	.then((response) => response.json()  // turn it to JSON no matter what(my express api will always return JSON unless I mess up in the future)
 		.then((json) => {
 			if(response.ok) {
-				action.success(json)
+				actions.success(json)
 			} else { 
 				// here if error at joe DB
 				console.error(json)
